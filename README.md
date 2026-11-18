@@ -2,6 +2,9 @@
 
 > **Your personal air quality assistant for smog season.**  
 > Built for TinkerHub Challenge 6 — GenAI for Real World Impact.
+>
+> 🌐 **Live Web App**: [https://saans-6865e.web.app](https://saans-6865e.web.app)  
+> 📦 **GitHub Repository**: [https://github.com/kh-nabeel/Air-Quality-Assistant](https://github.com/kh-nabeel/Air-Quality-Assistant)
 
 ---
 

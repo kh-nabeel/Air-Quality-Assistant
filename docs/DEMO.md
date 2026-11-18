@@ -6,7 +6,7 @@ A 2-minute walkthrough of the key features for evaluators and judges.
 
 ## Setup (30 seconds)
 
-1. Open the live URL: `https://<your-firebase-project>.web.app`
+1. Open the live URL: `https://saans-6865e.web.app`
 2. The app loads instantly — onboarding begins immediately with no login required.
 
 ---
