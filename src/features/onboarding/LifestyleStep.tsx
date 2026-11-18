@@ -1,5 +1,7 @@
 import type { CommuteMode, CookingFuel, BudgetTier } from '@/domain/types';
 import { useTranslation } from '@/i18n';
+import { Footprints, Bike, Bus, Car, Laptop, Zap, Flame, TreePine, Layers, BadgePercent, Coins, TrendingUp } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 interface LifestyleStepProps {
   readonly commuteMode: CommuteMode;
@@ -14,6 +16,27 @@ const COMMUTE_OPTIONS: CommuteMode[] = ['walk', 'cycle', 'publicTransport', 'car
 const FUEL_OPTIONS: CookingFuel[] = ['electric', 'lpg', 'biomass', 'mixed'];
 const BUDGET_OPTIONS: BudgetTier[] = ['free', 'low', 'investment'];
 
+const COMMUTE_ICONS: Record<CommuteMode, ReactNode> = {
+  walk: <Footprints size={16} />,
+  cycle: <Bike size={16} />,
+  publicTransport: <Bus size={16} />,
+  car: <Car size={16} />,
+  wfh: <Laptop size={16} />,
+};
+
+const FUEL_ICONS: Record<CookingFuel, ReactNode> = {
+  electric: <Zap size={16} />,
+  lpg: <Flame size={16} />,
+  biomass: <TreePine size={16} />,
+  mixed: <Layers size={16} />,
+};
+
+const BUDGET_ICONS: Record<BudgetTier, ReactNode> = {
+  free: <BadgePercent size={16} />,
+  low: <Coins size={16} />,
+  investment: <TrendingUp size={16} />,
+};
+
 /** Step 3: Lifestyle preferences — commute, cooking, budget */
 export function LifestyleStep({
   commuteMode, cookingFuel, budgetTier,
@@ -27,13 +50,17 @@ export function LifestyleStep({
     gap: 'var(--space-3)',
     padding: 'var(--space-3) var(--space-4)',
     borderRadius: 'var(--radius-lg)',
-    border: `2px solid ${isActive ? 'var(--color-brand-primary)' : 'var(--color-border)'}`,
+    border: '2px solid var(--color-bg-dark)',
+    boxShadow: isActive ? '3px 3px 0px var(--color-bg-dark)' : 'var(--shadow-sm)',
+    transform: isActive ? 'translate(-1px, -1px)' : 'none',
     cursor: 'pointer',
-    minHeight: '44px',
-    fontFamily: 'var(--font-body)',
+    minHeight: '48px',
+    fontFamily: 'var(--font-heading)',
+    fontWeight: 600,
     fontSize: 'var(--text-sm)',
-    background: isActive ? 'var(--color-brand-primary-light)' : 'var(--color-bg-elevated)',
-    transition: 'border-color var(--transition-fast)',
+    background: isActive ? '#FEF08A' : '#ffffff',
+    color: 'var(--color-bg-dark)',
+    transition: 'all var(--transition-fast)',
   });
 
   return (
@@ -42,7 +69,7 @@ export function LifestyleStep({
 
       {/* Commute mode */}
       <fieldset style={{ border: 'none', padding: 0, margin: '0 0 var(--space-6) 0' }}>
-        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase' }}>
+        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase', color: 'var(--color-bg-dark)' }}>
           {t.onboarding.commuteMode}
         </legend>
         <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
@@ -53,9 +80,12 @@ export function LifestyleStep({
                 name="commute"
                 checked={commuteMode === mode}
                 onChange={() => onCommuteModeChange(mode)}
-                style={{ width: 20, height: 20, accentColor: 'var(--color-brand-primary)' }}
+                style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
               />
-              {t.onboarding[mode]}
+              <span style={{ display: 'inline-flex', color: 'var(--color-text-secondary)' }}>
+                {COMMUTE_ICONS[mode]}
+              </span>
+              <span>{t.onboarding[mode]}</span>
             </label>
           ))}
         </div>
@@ -63,7 +93,7 @@ export function LifestyleStep({
 
       {/* Cooking fuel */}
       <fieldset style={{ border: 'none', padding: 0, margin: '0 0 var(--space-6) 0' }}>
-        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase' }}>
+        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase', color: 'var(--color-bg-dark)' }}>
           {t.onboarding.cookingFuel}
         </legend>
         <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
@@ -74,9 +104,12 @@ export function LifestyleStep({
                 name="fuel"
                 checked={cookingFuel === fuel}
                 onChange={() => onCookingFuelChange(fuel)}
-                style={{ width: 20, height: 20, accentColor: 'var(--color-brand-primary)' }}
+                style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
               />
-              {t.onboarding[fuel]}
+              <span style={{ display: 'inline-flex', color: 'var(--color-text-secondary)' }}>
+                {FUEL_ICONS[fuel]}
+              </span>
+              <span>{t.onboarding[fuel]}</span>
             </label>
           ))}
         </div>
@@ -84,7 +117,7 @@ export function LifestyleStep({
 
       {/* Budget */}
       <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
-        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase' }}>
+        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase', color: 'var(--color-bg-dark)' }}>
           {t.onboarding.budgetTier}
         </legend>
         <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
@@ -95,9 +128,12 @@ export function LifestyleStep({
                 name="budget"
                 checked={budgetTier === tier}
                 onChange={() => onBudgetTierChange(tier)}
-                style={{ width: 20, height: 20, accentColor: 'var(--color-brand-primary)' }}
+                style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
               />
-              {t.onboarding[tier]}
+              <span style={{ display: 'inline-flex', color: 'var(--color-text-secondary)' }}>
+                {BUDGET_ICONS[tier]}
+              </span>
+              <span>{t.onboarding[tier]}</span>
             </label>
           ))}
         </div>

@@ -7,6 +7,7 @@ import { Layout, SectionHeader } from '@/components/Layout';
 import { Card } from '@/components/Card';
 import { Badge } from '@/components/Badge';
 import { Spinner } from '@/components/Spinner';
+import { Shield } from 'lucide-react';
 
 interface IndoorHacksProps {
   readonly location: UserLocation;
@@ -43,12 +44,41 @@ export function IndoorHacks({ location, profile }: IndoorHacksProps) {
 
       <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
         {indoorActions.map((ranked, idx) => (
-          <Card key={ranked.action.id} variant="default" padding="md">
+          <Card
+            key={ranked.action.id}
+            variant="default"
+            padding="md"
+            style={{
+              border: '2px solid var(--color-bg-dark)',
+              boxShadow: 'var(--shadow-sm)',
+              background: '#ffffff',
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', margin: 0 }}>
-                <span style={{ color: 'var(--color-text-muted)', marginRight: 'var(--space-2)' }}>#{idx + 1}</span>
-                {ranked.action.title[language]}
-              </h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    background: 'var(--color-bg-dark)',
+                    color: '#ffffff',
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    fontSize: 'var(--text-xs)',
+                    border: '1.5px solid var(--color-bg-dark)',
+                    boxShadow: '1.5px 1.5px 0px rgba(0,0,0,0.6)',
+                  }}
+                >
+                  {(idx + 1).toString().padStart(2, '0')}
+                </span>
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-base)', margin: 0, color: 'var(--color-bg-dark)' }}>
+                  {ranked.action.title[language]}
+                </h3>
+              </div>
               <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                 <Badge variant="cost" costTier={ranked.action.costTier}>
                   {t.indoor.cost}: {costLabel(ranked.action.costTier)}
@@ -61,15 +91,48 @@ export function IndoorHacks({ location, profile }: IndoorHacksProps) {
                 </Badge>
               </div>
             </div>
+
             <p style={{ margin: 'var(--space-3) 0 0', fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
               {ranked.action.description[language]}
             </p>
-            <div style={{ marginTop: 'var(--space-3)', padding: 'var(--space-3)', background: 'var(--color-bg-secondary)', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-sm)' }}>
-              <strong>{t.indoor.exposureReduction}:</strong> {ranked.action.exposureReduction.min}–{ranked.action.exposureReduction.max}%
-              <br />
-              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
-                {ranked.action.evidenceNote}
+
+            <div
+              style={{
+                marginTop: 'var(--space-4)',
+                padding: 'var(--space-3) var(--space-4)',
+                background: '#ECFDF5',
+                borderRadius: 'var(--radius-lg)',
+                border: '1.5px solid var(--color-bg-dark)',
+                boxShadow: '1.5px 1.5px 0px var(--color-bg-dark)',
+                fontSize: 'var(--text-sm)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 'var(--space-3)',
+              }}
+            >
+              <span
+                style={{
+                  display: 'inline-flex',
+                  padding: '4px',
+                  borderRadius: '6px',
+                  background: '#A7F3D0',
+                  color: '#065F46',
+                  border: '1px solid var(--color-bg-dark)',
+                  flexShrink: 0,
+                  marginTop: '2px',
+                }}
+              >
+                <Shield size={16} />
               </span>
+              <div>
+                <span style={{ fontWeight: 700, color: '#065F46' }}>{t.indoor.exposureReduction}:</span>{' '}
+                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#065F46' }}>
+                  {ranked.action.exposureReduction.min}–{ranked.action.exposureReduction.max}%
+                </span>
+                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', margin: '4px 0 0', lineHeight: 'var(--leading-normal)' }}>
+                  {ranked.action.evidenceNote}
+                </p>
+              </div>
             </div>
           </Card>
         ))}

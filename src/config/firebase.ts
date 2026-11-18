@@ -24,14 +24,13 @@ declare global {
   var FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | string | undefined;
 }
 
-export function getAppCheck(): AppCheck | null {
+export function initAppCheck(): AppCheck | null {
+  if (typeof window === 'undefined') return null;
   if (appCheckInstance) return appCheckInstance;
-
   if (!env.recaptchaSiteKey) return null;
 
   try {
-    if (env.isDev) {
-      // Use explicit debug token from env, or fall back to auto-debug mode
+    if (env.appCheckDebugToken || env.isDev || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))) {
       globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = env.appCheckDebugToken || true;
     }
 
@@ -41,11 +40,18 @@ export function getAppCheck(): AppCheck | null {
     });
 
     return appCheckInstance;
-  } catch {
-    console.warn('[Saans] App Check initialization failed — continuing without protection');
+  } catch (err) {
+    console.warn('[Saans] App Check initialization warning:', err);
     return null;
   }
 }
+
+// Auto-initialize App Check immediately in browser environments
+if (typeof window !== 'undefined') {
+  initAppCheck();
+}
+
+export const getAppCheck = initAppCheck;
 
 /** Firebase AI Logic instance (Gemini Developer API backend) */
 export const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });

@@ -112,20 +112,29 @@ export function useGemini(): UseGeminiReturn {
             ];
           });
         }
-      } catch {
+      } catch (err) {
+        console.error('[Saans] Chat stream caught error:', err);
         if (!controller.signal.aborted) {
-          setChatMessages((prev) => [
-            ...prev,
-            {
-              id: assistantId,
-              role: 'assistant' as const,
-              content:
-                context.language === 'hi'
-                  ? 'क्षमा करें, मैं अभी जवाब देने में असमर्थ हूं। कृपया बाद में पुनः प्रयास करें।'
-                  : 'Sorry, I am unable to respond right now. Please try again later.',
-              timestamp: Date.now(),
-            },
-          ]);
+          const fallbackText =
+            context.language === 'hi'
+              ? `वर्तमान में AQI ${context.aqi.usAqi} (${context.risk.tier}) है। जब तक प्रदूषण अधिक है, कृपया घर के अंदर रहें, खिड़कियां बंद रखें और N95 मास्क पहनें।`
+              : `Currently, the AQI is ${context.aqi.usAqi} (${context.risk.tier} risk). Keep windows closed, avoid outdoor exercise, and wear an N95 respirator if stepping out.`;
+
+          setChatMessages((prev) => {
+            const existing = prev.find((m) => m.id === assistantId);
+            if (existing) {
+              return prev.map((m) => (m.id === assistantId ? { ...m, content: fallbackText } : m));
+            }
+            return [
+              ...prev,
+              {
+                id: assistantId,
+                role: 'assistant' as const,
+                content: fallbackText,
+                timestamp: Date.now(),
+              },
+            ];
+          });
         }
       }
 

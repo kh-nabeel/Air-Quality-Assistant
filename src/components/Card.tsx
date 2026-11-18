@@ -22,23 +22,23 @@ const paddingMap = {
 const variantMap: Record<string, CSSProperties> = {
   default: {
     background: 'var(--color-bg-elevated)',
-    border: '1px solid var(--color-border-light)',
+    border: '2px solid var(--color-bg-dark)',
     boxShadow: 'var(--shadow-sm)',
   },
   elevated: {
     background: 'var(--color-bg-elevated)',
-    border: '1px solid var(--color-border-light)',
+    border: '2px solid var(--color-bg-dark)',
     boxShadow: 'var(--shadow-md)',
   },
   outlined: {
-    background: 'transparent',
-    border: '2px solid var(--color-border)',
+    background: 'var(--color-bg-secondary)',
+    border: '2px dashed var(--color-bg-dark)',
     boxShadow: 'none',
   },
   accent: {
     background: 'var(--color-brand-primary-light)',
-    border: '2px solid var(--color-brand-primary)',
-    boxShadow: 'none',
+    border: '2px solid var(--color-bg-dark)',
+    boxShadow: 'var(--shadow-md)',
   },
 };
 

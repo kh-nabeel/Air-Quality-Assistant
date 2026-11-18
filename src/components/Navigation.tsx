@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from '@/i18n';
 import { Button } from './Button';
+import { Wind, Languages, RotateCcw } from 'lucide-react';
 
 interface NavigationProps {
   readonly onForgetMe?: () => void;
@@ -31,8 +32,9 @@ export function Navigation({ onForgetMe }: NavigationProps) {
         position: 'sticky',
         top: 0,
         zIndex: 'var(--z-sticky)' as unknown as number,
-        background: 'var(--color-bg-primary)',
-        borderBottom: '1px solid var(--color-border-light)',
+        background: '#FAF9F5',
+        borderBottom: '2.5px solid var(--color-bg-dark)',
+        boxShadow: '0 3px 0px rgba(24, 24, 27, 0.08)',
         padding: 'var(--space-3) var(--space-4)',
       }}
     >
@@ -53,13 +55,38 @@ export function Navigation({ onForgetMe }: NavigationProps) {
             fontFamily: 'var(--font-heading)',
             fontWeight: 800,
             fontSize: 'var(--text-2xl)',
-            color: 'var(--color-brand-primary)',
+            color: 'var(--color-bg-dark)',
             textDecoration: 'none',
             letterSpacing: 'var(--tracking-tight)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 'var(--space-2)',
           }}
           aria-label={t.app.name}
         >
-          {t.app.name}
+          <span
+            style={{
+              display: 'inline-flex',
+              padding: '6px',
+              borderRadius: '10px',
+              background: 'var(--color-brand-primary)',
+              color: '#ffffff',
+              border: '2px solid var(--color-bg-dark)',
+              boxShadow: '2px 2px 0px var(--color-bg-dark)',
+            }}
+          >
+            <Wind size={20} strokeWidth={2.5} />
+          </span>
+          <span>{t.app.name}</span>
+          <span
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: 'var(--color-brand-secondary)',
+              display: 'inline-block',
+            }}
+          />
         </NavLink>
 
         {/* Navigation links */}
@@ -67,10 +94,11 @@ export function Navigation({ onForgetMe }: NavigationProps) {
           aria-label="Main navigation"
           style={{
             display: 'flex',
-            gap: 'var(--space-1)',
+            gap: 'var(--space-2)',
             overflowX: 'auto',
             flex: 1,
             WebkitOverflowScrolling: 'touch',
+            padding: '2px',
           }}
         >
           {NAV_ITEMS.map((item) => (
@@ -81,17 +109,19 @@ export function Navigation({ onForgetMe }: NavigationProps) {
               style={({ isActive }) => ({
                 fontFamily: 'var(--font-heading)',
                 fontSize: 'var(--text-sm)',
-                fontWeight: isActive ? 600 : 400,
-                color: isActive ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? 'var(--color-bg-dark)' : 'var(--color-text-secondary)',
                 textDecoration: 'none',
-                padding: 'var(--space-2) var(--space-3)',
+                padding: 'var(--space-2) var(--space-4)',
                 borderRadius: 'var(--radius-full)',
-                background: isActive ? 'var(--color-brand-primary-light)' : 'transparent',
+                background: isActive ? '#FEF08A' : 'transparent',
+                border: isActive ? '2px solid var(--color-bg-dark)' : '2px solid transparent',
+                boxShadow: isActive ? '2px 2px 0px var(--color-bg-dark)' : 'none',
                 whiteSpace: 'nowrap',
-                minHeight: '44px',
+                minHeight: '40px',
                 display: 'flex',
                 alignItems: 'center',
-                transition: 'background var(--transition-fast)',
+                transition: 'all var(--transition-fast)',
                 textTransform: 'lowercase',
               })}
             >
@@ -100,33 +130,47 @@ export function Navigation({ onForgetMe }: NavigationProps) {
           ))}
         </nav>
 
-        {/* Language toggle */}
-        <button
-          onClick={toggleLanguage}
-          aria-label={`Switch to ${language === 'en' ? 'Hindi' : 'English'}`}
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: 'var(--text-sm)',
-            fontWeight: 600,
-            padding: 'var(--space-2) var(--space-3)',
-            borderRadius: 'var(--radius-full)',
-            border: '2px solid var(--color-border)',
-            background: 'transparent',
-            cursor: 'pointer',
-            minHeight: '44px',
-            minWidth: '44px',
-            color: 'var(--color-text-primary)',
-          }}
-        >
-          {language === 'en' ? 'हिं' : 'EN'}
-        </button>
+        {/* Action group */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+          {/* Language toggle */}
+          <button
+            onClick={toggleLanguage}
+            aria-label={`Switch to ${language === 'en' ? 'Hindi' : 'English'}`}
+            style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 700,
+              padding: 'var(--space-2) var(--space-3)',
+              borderRadius: 'var(--radius-full)',
+              border: '2px solid var(--color-bg-dark)',
+              background: '#ffffff',
+              boxShadow: '2px 2px 0px var(--color-bg-dark)',
+              cursor: 'pointer',
+              minHeight: '40px',
+              minWidth: '44px',
+              color: 'var(--color-bg-dark)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 'var(--space-1)',
+            }}
+          >
+            <Languages size={15} />
+            <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
+          </button>
 
-        {/* Forget me button */}
-        {onForgetMe && (
-          <Button variant="ghost" size="sm" onClick={onForgetMe}>
-            {t.onboarding.forgetMe}
-          </Button>
-        )}
+          {/* Reset profile button */}
+          {onForgetMe && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onForgetMe}
+              icon={<RotateCcw size={14} />}
+              style={{ minHeight: '40px' }}
+            >
+              {t.onboarding.forgetMe}
+            </Button>
+          )}
+        </div>
       </div>
     </header>
   );

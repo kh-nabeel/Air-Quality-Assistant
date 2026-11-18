@@ -14,13 +14,13 @@ import { Card } from '@/components/Card';
 import { LocationStep } from './LocationStep';
 import { HouseholdStep } from './HouseholdStep';
 import { LifestyleStep } from './LifestyleStep';
+import { Wind, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 
 interface OnboardingFlowProps {
   readonly onComplete: (location: UserLocation, profile: HouseholdProfile) => void;
   readonly initialLocation: UserLocation | null;
   readonly initialProfile: HouseholdProfile | null;
 }
-
 
 /** Multi-step onboarding wizard (3 skippable steps) */
 export function OnboardingFlow({ onComplete, initialLocation, initialProfile }: OnboardingFlowProps) {
@@ -64,35 +64,51 @@ export function OnboardingFlow({ onComplete, initialLocation, initialProfile }: 
         alignItems: 'center',
         justifyContent: 'center',
         padding: 'var(--space-4)',
-        background: 'var(--color-bg-primary)',
+        background: '#FAF9F5',
       }}
     >
-      <div style={{ maxWidth: '32rem', width: '100%' }}>
+      <div style={{ maxWidth: '34rem', width: '100%' }}>
         {/* Welcome header */}
-        <div style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
-          <h1
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 800,
-              fontSize: 'var(--text-4xl)',
-              color: 'var(--color-brand-primary)',
-              letterSpacing: 'var(--tracking-tight)',
-              marginBottom: 'var(--space-2)',
-            }}
-          >
-            {t.app.name}
-          </h1>
-          <p style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text-muted)', fontSize: 'var(--text-lg)' }}>
+        <div style={{ textAlign: 'center', marginBottom: 'var(--space-6)' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                padding: '8px',
+                borderRadius: '12px',
+                background: 'var(--color-brand-primary)',
+                color: '#ffffff',
+                border: '2px solid var(--color-bg-dark)',
+                boxShadow: '2px 2px 0px var(--color-bg-dark)',
+              }}
+            >
+              <Wind size={26} strokeWidth={2.5} />
+            </span>
+            <h1
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 800,
+                fontSize: 'var(--text-4xl)',
+                color: 'var(--color-bg-dark)',
+                letterSpacing: '-0.04em',
+                margin: 0,
+              }}
+            >
+              {t.app.name}
+            </h1>
+          </div>
+          <p style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text-secondary)', fontSize: 'var(--text-base)', fontWeight: 600, margin: 0 }}>
             {t.app.tagline}
           </p>
         </div>
 
-        {/* Step indicator */}
+        {/* Step indicator badges */}
         <div
           style={{
             display: 'flex',
-            gap: 'var(--space-2)',
+            gap: 'var(--space-3)',
             justifyContent: 'center',
+            alignItems: 'center',
             marginBottom: 'var(--space-6)',
           }}
           role="progressbar"
@@ -101,22 +117,47 @@ export function OnboardingFlow({ onComplete, initialLocation, initialProfile }: 
           aria-valuemax={3}
           aria-label={`Step ${step + 1} of 3`}
         >
-          {[0, 1, 2].map((s) => (
-            <div
-              key={s}
-              style={{
-                width: 'var(--space-10)',
-                height: 4,
-                borderRadius: 'var(--radius-full)',
-                background: s <= step ? 'var(--color-brand-primary)' : 'var(--color-border)',
-                transition: 'background var(--transition-normal)',
-              }}
-            />
-          ))}
+          {['Location', 'Household', 'Lifestyle'].map((label, s) => {
+            const isDone = s < step;
+            const isCurrent = s === step;
+            return (
+              <div
+                key={label}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '4px 12px',
+                  borderRadius: 'var(--radius-full)',
+                  border: '1.5px solid var(--color-bg-dark)',
+                  background: isCurrent ? '#FEF08A' : isDone ? '#D1FAE5' : '#ffffff',
+                  boxShadow: isCurrent ? '2px 2px 0px var(--color-bg-dark)' : 'none',
+                  fontSize: 'var(--text-xs)',
+                  fontFamily: 'var(--font-heading)',
+                  fontWeight: 700,
+                  color: 'var(--color-bg-dark)',
+                  transition: 'all var(--transition-fast)',
+                }}
+              >
+                <span style={{ fontFamily: 'var(--font-mono)' }}>
+                  {isDone ? <Check size={12} strokeWidth={3} /> : `0${s + 1}`}
+                </span>
+                <span>{label}</span>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Step content */}
-        <Card variant="elevated" padding="lg">
+        {/* Step content Card */}
+        <Card
+          variant="elevated"
+          padding="lg"
+          style={{
+            border: '2.5px solid var(--color-bg-dark)',
+            boxShadow: 'var(--shadow-lg)',
+            background: '#ffffff',
+          }}
+        >
           {step === 0 && <LocationStep onSelect={setLocation} currentLocation={location} />}
           {step === 1 && (
             <HouseholdStep
@@ -146,12 +187,19 @@ export function OnboardingFlow({ onComplete, initialLocation, initialProfile }: 
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              marginTop: 'var(--space-6)',
+              alignItems: 'center',
+              marginTop: 'var(--space-8)',
               gap: 'var(--space-3)',
+              paddingTop: 'var(--space-4)',
+              borderTop: '1.5px solid var(--color-border-light)',
             }}
           >
             {step > 0 ? (
-              <Button variant="ghost" onClick={() => setStep(step - 1)}>
+              <Button
+                variant="ghost"
+                icon={<ArrowLeft size={16} />}
+                onClick={() => setStep(step - 1)}
+              >
                 {t.onboarding.back}
               </Button>
             ) : (
@@ -168,11 +216,16 @@ export function OnboardingFlow({ onComplete, initialLocation, initialProfile }: 
                 <Button
                   onClick={() => setStep(step + 1)}
                   disabled={step === 0 && !canProceedFromStep0}
+                  icon={<ArrowRight size={16} />}
                 >
                   {t.onboarding.next}
                 </Button>
               ) : (
-                <Button onClick={handleFinish} disabled={!location}>
+                <Button
+                  onClick={handleFinish}
+                  disabled={!location}
+                  icon={<Check size={16} />}
+                >
                   {t.onboarding.finish}
                 </Button>
               )}

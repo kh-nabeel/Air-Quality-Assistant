@@ -1,4 +1,5 @@
 import type { ReactNode, CSSProperties } from 'react';
+import { Info, AlertTriangle, XCircle, CheckCircle2, X } from 'lucide-react';
 
 type BannerVariant = 'info' | 'warning' | 'error' | 'success';
 
@@ -9,24 +10,25 @@ interface BannerProps {
   readonly style?: CSSProperties;
 }
 
-const variantColors: Record<BannerVariant, { bg: string; border: string; icon: string }> = {
-  info: { bg: '#e3f2fd', border: 'var(--color-info)', icon: 'ℹ' },
-  warning: { bg: '#fff3e0', border: 'var(--color-warning)', icon: '⚠' },
-  error: { bg: '#ffebee', border: 'var(--color-error)', icon: '✕' },
-  success: { bg: '#e8f5e9', border: 'var(--color-success)', icon: '✓' },
+const variantConfig: Record<BannerVariant, { bg: string; border: string; icon: ReactNode }> = {
+  info: { bg: '#EFF6FF', border: '#2563EB', icon: <Info size={18} color="#2563EB" /> },
+  warning: { bg: '#FFFBEB', border: '#D97706', icon: <AlertTriangle size={18} color="#D97706" /> },
+  error: { bg: '#FEF2F2', border: '#DC2626', icon: <XCircle size={18} color="#DC2626" /> },
+  success: { bg: '#ECFDF5', border: '#059669', icon: <CheckCircle2 size={18} color="#059669" /> },
 };
 
 /** Alert banner for status messages, with optional dismiss button */
 export function Banner({ children, variant = 'info', onDismiss, style }: BannerProps) {
-  const colors = variantColors[variant];
+  const config = variantConfig[variant];
   const bannerStyle: CSSProperties = {
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 'var(--space-3)',
-    padding: 'var(--space-4)',
+    padding: 'var(--space-3) var(--space-4)',
     borderRadius: 'var(--radius-lg)',
-    background: colors.bg,
-    borderLeft: `4px solid ${colors.border}`,
+    background: config.bg,
+    border: '2px solid var(--color-bg-dark)',
+    boxShadow: 'var(--shadow-sm)',
     fontSize: 'var(--text-sm)',
     fontFamily: 'var(--font-body)',
     color: 'var(--color-text-primary)',
@@ -35,8 +37,10 @@ export function Banner({ children, variant = 'info', onDismiss, style }: BannerP
 
   return (
     <div role="alert" style={bannerStyle}>
-      <span aria-hidden="true" style={{ fontSize: 'var(--text-lg)', flexShrink: 0 }}>{colors.icon}</span>
-      <div style={{ flex: 1 }}>{children}</div>
+      <span aria-hidden="true" style={{ display: 'inline-flex', flexShrink: 0 }}>
+        {config.icon}
+      </span>
+      <div style={{ flex: 1, lineHeight: 'var(--leading-relaxed)' }}>{children}</div>
       {onDismiss && (
         <button
           onClick={onDismiss}
@@ -45,17 +49,16 @@ export function Banner({ children, variant = 'info', onDismiss, style }: BannerP
             background: 'none',
             border: 'none',
             cursor: 'pointer',
-            fontSize: 'var(--text-lg)',
             color: 'var(--color-text-muted)',
             padding: 'var(--space-1)',
-            minWidth: '44px',
-            minHeight: '44px',
+            minWidth: '36px',
+            minHeight: '36px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          ×
+          <X size={16} />
         </button>
       )}
     </div>

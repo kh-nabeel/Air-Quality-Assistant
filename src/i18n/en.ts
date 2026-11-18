@@ -117,7 +117,7 @@ export const en = {
     stop: 'stop',
     suggestedTitle: 'suggested questions',
     thinking: 'saans is thinking...',
-    disclaimer: '⚕️ This is not medical advice. If you experience severe symptoms, please consult a doctor immediately.',
+    disclaimer: 'This is not medical advice. If you experience severe symptoms, please consult a doctor immediately.',
   },
   community: {
     title: 'community kit',

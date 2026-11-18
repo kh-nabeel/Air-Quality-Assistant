@@ -1,10 +1,10 @@
 import type { UserLocation } from '@/domain/types';
 
-/** Primary Gemini model for plan generation and chat */
-export const GEMINI_MODEL_PRIMARY = 'gemini-2.5-flash';
+/** Primary Gemini model for plan generation and chat (fast, reliable, low-latency) */
+export const GEMINI_MODEL_PRIMARY = 'gemini-3.5-flash-lite';
 
 /** Fallback model when primary is unavailable */
-export const GEMINI_MODEL_FALLBACK = 'gemini-2.5-flash-lite';
+export const GEMINI_MODEL_FALLBACK = 'gemini-3.8-flash';
 
 /** AQI data cache time-to-live in milliseconds (15 minutes) */
 export const AQI_CACHE_TTL_MS = 900_000;

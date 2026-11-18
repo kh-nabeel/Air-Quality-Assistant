@@ -17,6 +17,7 @@ import { Badge } from '@/components/Badge';
 import { Spinner } from '@/components/Spinner';
 import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';
+import { Clock, ShieldCheck, ShieldAlert, Sparkles, RefreshCw } from 'lucide-react';
 
 interface DailyPlanProps {
   readonly location: UserLocation;
@@ -68,20 +69,45 @@ export function DailyPlan({ location, profile }: DailyPlanProps) {
       )}
 
       {plan && (
-        <Card variant="accent" padding="md" style={{ marginBottom: 'var(--space-6)' }}>
-          <p style={{ fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)', margin: 0 }}>
+        <Card
+          variant="accent"
+          padding="md"
+          style={{
+            marginBottom: 'var(--space-6)',
+            border: '2.5px solid var(--color-bg-dark)',
+            boxShadow: 'var(--shadow-md)',
+            background: '#FEF08A',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                padding: '4px',
+                borderRadius: '6px',
+                background: 'var(--color-bg-dark)',
+                color: '#FEF08A',
+              }}
+            >
+              <Sparkles size={16} />
+            </span>
+            <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-sm)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Personalized Advisor Summary
+            </span>
+          </div>
+          <p style={{ fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)', margin: 0, fontWeight: 500, color: 'var(--color-bg-dark)' }}>
             {plan.summary}
           </p>
-          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', marginTop: 'var(--space-2)' }}>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-3)', margin: '12px 0 0' }}>
             {t.plan.poweredBy}
           </p>
         </Card>
       )}
 
       {planLoading && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-4)', padding: 'var(--space-3)', background: 'var(--color-bg-secondary)', borderRadius: 'var(--radius-lg)', border: '1.5px solid var(--color-bg-dark)' }}>
           <Spinner size="sm" />
-          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Generating personalized plan…</span>
+          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)', fontWeight: 600 }}>Generating personalized plan via Gemini…</span>
         </div>
       )}
 
@@ -93,22 +119,64 @@ export function DailyPlan({ location, profile }: DailyPlanProps) {
         {routine.blocks.map((block) => {
           const startLabel = `${block.startHour.toString().padStart(2, '0')}:00`;
           const endLabel = `${block.endHour.toString().padStart(2, '0')}:00`;
+          const isSafe = block.isOutdoorSafe;
           return (
-            <Card key={block.timeOfDay} variant="default" padding="md">
+            <Card
+              key={block.timeOfDay}
+              variant="default"
+              padding="md"
+              style={{
+                border: '2px solid var(--color-bg-dark)',
+                boxShadow: 'var(--shadow-sm)',
+                background: isSafe ? '#F0FDF4' : '#ffffff',
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 'var(--text-xs)',
+                      fontWeight: 700,
+                      color: 'var(--color-bg-dark)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 8px',
+                      background: 'var(--color-bg-secondary)',
+                      borderRadius: 'var(--radius-full)',
+                      border: '1px solid var(--color-bg-dark)',
+                    }}
+                  >
+                    <Clock size={12} />
                     {startLabel}–{endLabel}
                   </span>
-                  <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', margin: 0 }}>
+                  <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-base)', margin: 0, color: 'var(--color-bg-dark)' }}>
                     {block.label}
                   </h3>
                 </div>
-                <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-                  <Badge variant="aqi" aqiCategory={block.isOutdoorSafe ? 'good' : 'unhealthy'}>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                  <Badge variant="aqi" aqiCategory={isSafe ? 'good' : 'unhealthy'}>
                     AQI ~{block.aqiAtTime}
                   </Badge>
-                  <Badge>{block.isOutdoorSafe ? '✓ outdoor ok' : '✕ stay indoor'}</Badge>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '3px 8px',
+                      borderRadius: 'var(--radius-full)',
+                      border: '1.5px solid var(--color-bg-dark)',
+                      background: isSafe ? '#DCFCE7' : '#FEE2E2',
+                      color: isSafe ? '#166534' : '#991B1B',
+                      fontSize: 'var(--text-xs)',
+                      fontFamily: 'var(--font-heading)',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {isSafe ? <ShieldCheck size={13} /> : <ShieldAlert size={13} />}
+                    {isSafe ? 'outdoor ok' : 'stay indoor'}
+                  </span>
                 </div>
               </div>
               <p style={{ margin: 0, fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
@@ -120,10 +188,11 @@ export function DailyPlan({ location, profile }: DailyPlanProps) {
       </div>
 
       {data && risk && (
-        <div style={{ marginTop: 'var(--space-6)', textAlign: 'center' }}>
+        <div style={{ marginTop: 'var(--space-8)', textAlign: 'center' }}>
           <Button
             variant="secondary"
             loading={planLoading}
+            icon={<RefreshCw size={15} />}
             onClick={() => void generateDailyPlan({ location, aqi: data, risk, actions: rankedActions, language })}
           >
             {t.plan.regenerate}

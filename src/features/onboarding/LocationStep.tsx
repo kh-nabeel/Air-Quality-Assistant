@@ -8,6 +8,7 @@ import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Spinner } from '@/components/Spinner';
+import { MapPin, Navigation, Search } from 'lucide-react';
 
 interface LocationStepProps {
   readonly onSelect: (location: UserLocation) => void;
@@ -69,15 +70,25 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
   return (
     <div>
       <h2 className="section-title">{t.onboarding.step1Title}</h2>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
+      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-4)', lineHeight: 'var(--leading-relaxed)' }}>
         {t.onboarding.locationConsent}
       </p>
 
       {/* Current selection */}
       {currentLocation && (
-        <Card variant="accent" padding="sm" style={{ marginBottom: 'var(--space-4)' }}>
-          <p style={{ margin: 0, fontWeight: 600 }}>
-            📍 {currentLocation.name}{currentLocation.country ? `, ${currentLocation.country}` : ''}
+        <Card
+          variant="accent"
+          padding="sm"
+          style={{
+            marginBottom: 'var(--space-4)',
+            border: '2px solid var(--color-bg-dark)',
+            boxShadow: 'var(--shadow-sm)',
+            background: '#FEF08A',
+          }}
+        >
+          <p style={{ margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-bg-dark)' }}>
+            <MapPin size={16} color="var(--color-bg-dark)" />
+            <span>{currentLocation.name}{currentLocation.country ? `, ${currentLocation.country}` : ''}</span>
           </p>
         </Card>
       )}
@@ -101,9 +112,10 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
             listStyle: 'none',
             padding: 0,
             margin: 'var(--space-2) 0',
-            border: '1px solid var(--color-border)',
+            border: '2px solid var(--color-bg-dark)',
             borderRadius: 'var(--radius-lg)',
             overflow: 'hidden',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           {results.map((r) => (
@@ -111,7 +123,9 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
               <button
                 onClick={() => handleSelectResult(r)}
                 style={{
-                  display: 'block',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
                   width: '100%',
                   padding: 'var(--space-3) var(--space-4)',
                   background: 'var(--color-bg-elevated)',
@@ -119,12 +133,14 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
                   borderBottom: '1px solid var(--color-border-light)',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  fontFamily: 'var(--font-body)',
+                  fontFamily: 'var(--font-heading)',
+                  fontWeight: 600,
                   fontSize: 'var(--text-sm)',
                   minHeight: '44px',
                 }}
               >
-                {r.name}{r.admin1 ? `, ${r.admin1}` : ''}, {r.country}
+                <Search size={14} color="var(--color-text-muted)" />
+                <span>{r.name}{r.admin1 ? `, ${r.admin1}` : ''}, {r.country}</span>
               </button>
             </li>
           ))}
@@ -133,7 +149,12 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
 
       {/* Use my location */}
       <div style={{ marginTop: 'var(--space-4)' }}>
-        <Button variant="secondary" onClick={handleUseMyLocation} loading={geoLoading}>
+        <Button
+          variant="secondary"
+          onClick={handleUseMyLocation}
+          loading={geoLoading}
+          icon={<Navigation size={15} />}
+        >
           {t.onboarding.useMyLocation}
         </Button>
         {geoError && (
@@ -145,7 +166,7 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
 
       {/* Quick picks */}
       <div style={{ marginTop: 'var(--space-6)' }}>
-        <p style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-2)', textTransform: 'lowercase' }}>
+        <p style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-2)', textTransform: 'lowercase', color: 'var(--color-bg-dark)' }}>
           {t.onboarding.quickPicks}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
@@ -154,6 +175,7 @@ export function LocationStep({ onSelect, currentLocation }: LocationStepProps) {
               key={city.name}
               variant="ghost"
               size="sm"
+              icon={<MapPin size={12} />}
               onClick={() => onSelect(city)}
             >
               {city.name}

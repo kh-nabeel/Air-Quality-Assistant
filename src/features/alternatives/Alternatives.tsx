@@ -7,6 +7,7 @@ import { Layout, SectionHeader } from '@/components/Layout';
 import { Card } from '@/components/Card';
 import { Badge } from '@/components/Badge';
 import { Spinner } from '@/components/Spinner';
+import { Leaf, ShieldCheck } from 'lucide-react';
 
 interface AlternativesProps {
   readonly location: UserLocation;
@@ -45,43 +46,76 @@ export function Alternatives({ location, profile }: AlternativesProps) {
 
       <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
         {altActions.map((ranked) => (
-          <Card key={ranked.action.id} variant="default" padding="md">
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', margin: '0 0 var(--space-2)' }}>
-              {ranked.action.title[language]}
-            </h3>
-            <p style={{ margin: '0 0 var(--space-3)', fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
-              {ranked.action.description[language]}
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
-              <div style={{ padding: 'var(--space-3)', background: 'var(--color-brand-primary-light)', borderRadius: 'var(--radius-md)' }}>
-                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-brand-primary)', marginBottom: 'var(--space-1)', textTransform: 'lowercase' }}>
-                  {t.alternatives.personalBenefit}
-                </div>
-                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-lg)' }}>
-                  {ranked.action.exposureReduction.min}–{ranked.action.exposureReduction.max}%
-                </div>
-              </div>
-
-              <div style={{ padding: 'var(--space-3)', background: 'var(--color-bg-secondary)', borderRadius: 'var(--radius-md)' }}>
-                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: 'var(--space-1)', textTransform: 'lowercase' }}>
-                  {t.alternatives.emissionsBenefit}
-                </div>
-                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-lg)' }}>
-                  {ranked.action.emissionsReduction
-                    ? `${ranked.action.emissionsReduction.min}–${ranked.action.emissionsReduction.max}%`
-                    : '—'}
-                </div>
+          <Card
+            key={ranked.action.id}
+            variant="default"
+            padding="md"
+            style={{
+              border: '2px solid var(--color-bg-dark)',
+              boxShadow: 'var(--shadow-sm)',
+              background: '#ffffff',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-lg)', margin: 0, color: 'var(--color-bg-dark)' }}>
+                {ranked.action.title[language]}
+              </h3>
+              <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+                <Badge variant="cost" costTier={ranked.action.costTier}>
+                  {costLabel(ranked.action.costTier)}
+                </Badge>
+                <Badge variant="evidence" evidence={ranked.action.evidenceStrength}>
+                  {t.common[ranked.action.evidenceStrength]}
+                </Badge>
               </div>
             </div>
 
-            <div style={{ marginTop: 'var(--space-3)', display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-              <Badge variant="cost" costTier={ranked.action.costTier}>
-                {costLabel(ranked.action.costTier)}
-              </Badge>
-              <Badge variant="evidence" evidence={ranked.action.evidenceStrength}>
-                {t.common[ranked.action.evidenceStrength]}
-              </Badge>
+            <p style={{ margin: '0 0 var(--space-4)', fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
+              {ranked.action.description[language]}
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-3)' }}>
+              {/* Personal Exposure Benefit */}
+              <div
+                style={{
+                  padding: 'var(--space-3) var(--space-4)',
+                  background: '#ECFDF5',
+                  borderRadius: 'var(--radius-lg)',
+                  border: '1.5px solid var(--color-bg-dark)',
+                  boxShadow: '1.5px 1.5px 0px var(--color-bg-dark)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: 'var(--text-xs)', fontWeight: 700, color: '#065F46', marginBottom: 'var(--space-1)', textTransform: 'lowercase' }}>
+                  <ShieldCheck size={14} />
+                  <span>{t.alternatives.personalBenefit}</span>
+                </div>
+                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-xl)', color: '#065F46' }}>
+                  {ranked.action.exposureReduction.min}–{ranked.action.exposureReduction.max}%
+                </div>
+                <span style={{ fontSize: '11px', color: '#047857' }}>exposure reduction</span>
+              </div>
+
+              {/* Emissions Benefit */}
+              <div
+                style={{
+                  padding: 'var(--space-3) var(--space-4)',
+                  background: '#FEF3C7',
+                  borderRadius: 'var(--radius-lg)',
+                  border: '1.5px solid var(--color-bg-dark)',
+                  boxShadow: '1.5px 1.5px 0px var(--color-bg-dark)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: 'var(--text-xs)', fontWeight: 700, color: '#92400E', marginBottom: 'var(--space-1)', textTransform: 'lowercase' }}>
+                  <Leaf size={14} />
+                  <span>{t.alternatives.emissionsBenefit}</span>
+                </div>
+                <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-xl)', color: '#92400E' }}>
+                  {ranked.action.emissionsReduction
+                    ? `${ranked.action.emissionsReduction.min}–${ranked.action.emissionsReduction.max}%`
+                    : 'community-wide'}
+                </div>
+                <span style={{ fontSize: '11px', color: '#B45309' }}>net emissions cut</span>
+              </div>
             </div>
           </Card>
         ))}

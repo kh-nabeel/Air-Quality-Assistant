@@ -6,6 +6,7 @@ import { formatTime, formatAqi } from '@/utils/format';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { SectionHeader } from '@/components/Layout';
+import { Sun, Table, BarChart3 } from 'lucide-react';
 
 interface HourlyChartProps {
   readonly hourly: readonly HourlyAqiData[];
@@ -29,10 +30,23 @@ export function HourlyChart({ hourly, bestWindow }: HourlyChartProps) {
   };
 
   return (
-    <Card variant="default" padding="md">
+    <Card
+      variant="default"
+      padding="md"
+      style={{
+        border: '2.5px solid var(--color-bg-dark)',
+        boxShadow: 'var(--shadow-md)',
+        background: '#ffffff',
+      }}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
         <SectionHeader number="03" title={t.aqi.hourlyForecast} />
-        <Button variant="ghost" size="sm" onClick={() => setShowTable(!showTable)}>
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={showTable ? <BarChart3 size={15} /> : <Table size={15} />}
+          onClick={() => setShowTable(!showTable)}
+        >
           {showTable ? t.aqi.hourlyForecast : t.aqi.viewAsTable}
         </Button>
       </div>
@@ -46,15 +60,21 @@ export function HourlyChart({ hourly, bestWindow }: HourlyChartProps) {
             gap: 'var(--space-2)',
             padding: 'var(--space-2) var(--space-4)',
             borderRadius: 'var(--radius-full)',
-            background: 'var(--color-brand-primary-light)',
-            border: '2px solid var(--color-brand-primary)',
+            background: '#FEF08A',
+            border: '2px solid var(--color-bg-dark)',
+            boxShadow: '2px 2px 0px var(--color-bg-dark)',
             fontSize: 'var(--text-sm)',
-            fontWeight: 600,
+            fontWeight: 700,
+            color: 'var(--color-bg-dark)',
             marginBottom: 'var(--space-4)',
           }}
         >
-          <span aria-hidden="true">🌤</span>
-          {t.aqi.bestWindow}: {formatTime(bestWindow.startTime)} – {formatTime(bestWindow.endTime)} (AQI ~{bestWindow.avgAqi})
+          <span style={{ display: 'inline-flex', color: 'var(--color-brand-secondary)' }}>
+            <Sun size={16} />
+          </span>
+          <span>
+            {t.aqi.bestWindow}: {formatTime(bestWindow.startTime)} – {formatTime(bestWindow.endTime)} (AQI ~{bestWindow.avgAqi})
+          </span>
         </div>
       )}
       {!bestWindow && (
@@ -65,7 +85,7 @@ export function HourlyChart({ hourly, bestWindow }: HourlyChartProps) {
 
       {showTable ? (
         /* Data table alternative */
-        <div style={{ overflowX: 'auto' }}>
+        <div style={{ overflowX: 'auto', border: '1.5px solid var(--color-bg-dark)', borderRadius: 'var(--radius-md)' }}>
           <table
             style={{
               width: '100%',
@@ -75,27 +95,28 @@ export function HourlyChart({ hourly, bestWindow }: HourlyChartProps) {
             }}
           >
             <thead>
-              <tr>
-                <th style={{ textAlign: 'left', padding: 'var(--space-2)', borderBottom: '2px solid var(--color-border)' }}>Time</th>
-                <th style={{ textAlign: 'right', padding: 'var(--space-2)', borderBottom: '2px solid var(--color-border)' }}>AQI</th>
-                <th style={{ textAlign: 'right', padding: 'var(--space-2)', borderBottom: '2px solid var(--color-border)' }}>PM2.5</th>
-                <th style={{ textAlign: 'right', padding: 'var(--space-2)', borderBottom: '2px solid var(--color-border)' }}>Category</th>
+              <tr style={{ background: 'var(--color-bg-secondary)' }}>
+                <th style={{ textAlign: 'left', padding: 'var(--space-2) var(--space-3)', borderBottom: '2px solid var(--color-bg-dark)', fontFamily: 'var(--font-heading)', fontWeight: 700 }}>Time</th>
+                <th style={{ textAlign: 'right', padding: 'var(--space-2) var(--space-3)', borderBottom: '2px solid var(--color-bg-dark)', fontFamily: 'var(--font-heading)', fontWeight: 700 }}>AQI</th>
+                <th style={{ textAlign: 'right', padding: 'var(--space-2) var(--space-3)', borderBottom: '2px solid var(--color-bg-dark)', fontFamily: 'var(--font-heading)', fontWeight: 700 }}>PM2.5</th>
+                <th style={{ textAlign: 'right', padding: 'var(--space-2) var(--space-3)', borderBottom: '2px solid var(--color-bg-dark)', fontFamily: 'var(--font-heading)', fontWeight: 700 }}>Category</th>
               </tr>
             </thead>
             <tbody>
               {displayHours.map((h) => {
                 const cls = classifyAqi(h.usAqi);
+                const inWin = isInBestWindow(h.time);
                 return (
                   <tr
                     key={h.time}
                     style={{
-                      background: isInBestWindow(h.time) ? 'var(--color-brand-primary-light)' : undefined,
+                      background: inWin ? '#FEF9C3' : undefined,
                     }}
                   >
-                    <td style={{ padding: 'var(--space-2)', borderBottom: '1px solid var(--color-border-light)' }}>{formatTime(h.time)}</td>
-                    <td style={{ padding: 'var(--space-2)', borderBottom: '1px solid var(--color-border-light)', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>{formatAqi(h.usAqi)}</td>
-                    <td style={{ padding: 'var(--space-2)', borderBottom: '1px solid var(--color-border-light)', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>{Math.round(h.pm25)}</td>
-                    <td style={{ padding: 'var(--space-2)', borderBottom: '1px solid var(--color-border-light)', textAlign: 'right' }}>{cls.label}</td>
+                    <td style={{ padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border-light)' }}>{formatTime(h.time)}</td>
+                    <td style={{ padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border-light)', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{formatAqi(h.usAqi)}</td>
+                    <td style={{ padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border-light)', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>{Math.round(h.pm25)}</td>
+                    <td style={{ padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border-light)', textAlign: 'right' }}>{cls.label}</td>
                   </tr>
                 );
               })}
@@ -109,16 +130,19 @@ export function HourlyChart({ hourly, bestWindow }: HourlyChartProps) {
           aria-label="Hourly AQI bar chart"
           style={{
             display: 'flex',
-            gap: 2,
+            gap: 3,
             alignItems: 'flex-end',
-            height: BAR_MAX_HEIGHT + 30,
+            height: BAR_MAX_HEIGHT + 36,
             overflowX: 'auto',
-            paddingBottom: 24,
+            padding: '12px 6px',
+            background: 'var(--color-bg-secondary)',
+            borderRadius: 'var(--radius-lg)',
+            border: '2px solid var(--color-bg-dark)',
           }}
         >
           {displayHours.map((h) => {
             const cls = classifyAqi(h.usAqi);
-            const height = Math.max(4, (Math.min(h.usAqi, AQI_DISPLAY_MAX) / AQI_DISPLAY_MAX) * BAR_MAX_HEIGHT);
+            const height = Math.max(6, (Math.min(h.usAqi, AQI_DISPLAY_MAX) / AQI_DISPLAY_MAX) * BAR_MAX_HEIGHT);
             const inWindow = isInBestWindow(h.time);
             return (
               <div
@@ -136,22 +160,23 @@ export function HourlyChart({ hourly, bestWindow }: HourlyChartProps) {
                   style={{
                     width: '100%',
                     height,
-                    borderRadius: 'var(--radius-sm) var(--radius-sm) 0 0',
+                    borderRadius: '4px 4px 0 0',
                     background: `var(--color-${cls.cssClass})`,
-                    border: inWindow ? '2px solid var(--color-brand-primary)' : 'none',
+                    border: inWindow ? '2px solid #000000' : '1px solid rgba(0,0,0,0.3)',
+                    boxShadow: inWindow ? '0 0 6px rgba(0,0,0,0.4)' : 'none',
                     transition: 'height var(--transition-normal)',
                   }}
                 />
                 <span
                   style={{
                     fontSize: 9,
-                    color: 'var(--color-text-muted)',
-                    marginTop: 2,
-                    writingMode: 'vertical-rl',
-                    transform: 'rotate(180deg)',
+                    color: inWindow ? '#000000' : 'var(--color-text-secondary)',
+                    fontWeight: inWindow ? 800 : 500,
+                    marginTop: 4,
+                    fontFamily: 'var(--font-mono)',
                   }}
                 >
-                  {new Date(h.time).getHours()}
+                  {new Date(h.time).getHours()}h
                 </span>
               </div>
             );
