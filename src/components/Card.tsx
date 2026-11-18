@@ -8,6 +8,8 @@ interface CardProps {
   readonly style?: CSSProperties;
   /** Accessible label for the card region */
   readonly ariaLabel?: string;
+  /** aria-live region for dynamic content updates */
+  readonly ariaLive?: 'polite' | 'assertive' | 'off';
 }
 
 const paddingMap = {
@@ -48,6 +50,7 @@ export function Card({
   className,
   style,
   ariaLabel,
+  ariaLive,
 }: CardProps) {
   const cardStyle: CSSProperties = {
     borderRadius: 'var(--radius-xl)',
@@ -58,7 +61,13 @@ export function Card({
   };
 
   return (
-    <div className={className} style={cardStyle} role={ariaLabel ? 'region' : undefined} aria-label={ariaLabel}>
+    <div
+      className={className}
+      style={cardStyle}
+      role={ariaLabel ? 'region' : undefined}
+      aria-label={ariaLabel}
+      aria-live={ariaLive}
+    >
       {children}
     </div>
   );

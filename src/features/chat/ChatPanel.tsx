@@ -88,6 +88,8 @@ export function ChatPanel({ location, profile }: ChatPanelProps) {
       <Card
         variant="default"
         padding="md"
+        ariaLive="polite"
+        ariaLabel={t.chat.title}
         style={{
           height: '24rem',
           overflowY: 'auto',
@@ -161,7 +163,7 @@ export function ChatPanel({ location, profile }: ChatPanelProps) {
         <div ref={messagesEndRef} />
       </Card>
 
-      <div aria-live="polite" style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'flex-end' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'flex-end' }}>
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}

@@ -18,6 +18,12 @@ export const firebaseApp = initializeApp(firebaseConfig);
 /** Firebase App Check — protects backend APIs from abuse */
 let appCheckInstance: AppCheck | null = null;
 
+/** Global augmentation for Firebase App Check debug token (dev only) */
+declare global {
+  // eslint-disable-next-line no-var
+  var FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | string | undefined;
+}
+
 export function getAppCheck(): AppCheck | null {
   if (appCheckInstance) return appCheckInstance;
 
@@ -25,8 +31,8 @@ export function getAppCheck(): AppCheck | null {
 
   try {
     if (env.isDev) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (self as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+      // Use explicit debug token from env, or fall back to auto-debug mode
+      globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = env.appCheckDebugToken || true;
     }
 
     appCheckInstance = initializeAppCheck(firebaseApp, {
