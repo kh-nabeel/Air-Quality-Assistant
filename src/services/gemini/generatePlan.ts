@@ -28,9 +28,7 @@ interface GeneratePlanInput {
  * @param context - Current location, AQI, risk assessment, and ranked actions
  * @returns Personalized plan response or deterministic fallback
  */
-export async function generatePlan(
-  context: GeneratePlanInput,
-): Promise<Result<PlanResponse>> {
+export async function generatePlan(context: GeneratePlanInput): Promise<Result<PlanResponse>> {
   const contextBlock = buildContextBlock(context);
   const languageInstruction =
     context.language === 'hi'
@@ -76,7 +74,10 @@ async function attemptGeneration(
     const model = getGeminiModel(useFallback);
     const result = await model.generateContent({
       contents: [{ role: 'user', parts: [{ type: 'text' as const, text: prompt }] }],
-      systemInstruction: { role: 'system', parts: [{ type: 'text' as const, text: SYSTEM_INSTRUCTION_PLAN }] },
+      systemInstruction: {
+        role: 'system',
+        parts: [{ type: 'text' as const, text: SYSTEM_INSTRUCTION_PLAN }],
+      },
       generationConfig: {
         temperature: GEMINI_TEMPERATURE,
         maxOutputTokens: MAX_OUTPUT_TOKENS,

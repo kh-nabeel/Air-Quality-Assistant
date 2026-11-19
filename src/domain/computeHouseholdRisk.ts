@@ -30,10 +30,7 @@ function baseAqiRisk(aqi: number): number {
  * @param aqi - Current air quality data
  * @returns Risk assessment with tier, numeric score, contributing factors, and recommendations
  */
-export function computeHouseholdRisk(
-  profile: HouseholdProfile,
-  aqi: AqiData,
-): RiskAssessment {
+export function computeHouseholdRisk(profile: HouseholdProfile, aqi: AqiData): RiskAssessment {
   const base = baseAqiRisk(aqi.usAqi);
   const factors: string[] = [];
   const recommendations: string[] = [];
@@ -69,7 +66,9 @@ export function computeHouseholdRisk(
   // Home type adjustment
   const homeAdj = HOME_TYPE_ADJUSTMENTS[profile.homeType] ?? 0;
   if (homeAdj > 0) {
-    factors.push(`${profile.homeType === 'leaky' ? 'Leaky' : 'Moderate'} home — outdoor pollution infiltrates indoors`);
+    factors.push(
+      `${profile.homeType === 'leaky' ? 'Leaky' : 'Moderate'} home — outdoor pollution infiltrates indoors`,
+    );
     recommendations.push('Seal gaps around windows and doors');
   }
 

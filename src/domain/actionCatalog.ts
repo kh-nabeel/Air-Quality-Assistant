@@ -20,7 +20,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { homeTypes: ['leaky', 'moderate'], minAqi: 100 },
     exposureReduction: { min: 15, max: 40 },
     emissionsReduction: null,
-    evidenceNote: 'EPA guidance on weatherization; building envelope studies show 20-50% PM2.5 infiltration reduction',
+    evidenceNote:
+      'EPA guidance on weatherization; building envelope studies show 20-50% PM2.5 infiltration reduction',
     evidenceStrength: 'strong',
   },
   {
@@ -36,13 +37,17 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { minAqi: 50 },
     exposureReduction: { min: 30, max: 60 },
     emissionsReduction: null,
-    evidenceNote: 'EPA and WHO guidance; HEPA purifiers reduce indoor PM2.5 by 50-80% in controlled studies',
+    evidenceNote:
+      'EPA and WHO guidance; HEPA purifiers reduce indoor PM2.5 by 50-80% in controlled studies',
     evidenceStrength: 'strong',
   },
   {
     id: 'avoid-incense',
     category: 'indoor',
-    title: { en: 'Avoid incense, candles & indoor burning', hi: 'अगरबत्ती, मोमबत्ती और घर के अंदर जलाना बंद करें' },
+    title: {
+      en: 'Avoid incense, candles & indoor burning',
+      hi: 'अगरबत्ती, मोमबत्ती और घर के अंदर जलाना बंद करें',
+    },
     description: {
       en: 'Incense and candles release PM2.5 and VOCs. Avoid during high pollution days.',
       hi: 'अगरबत्ती और मोमबत्ती से PM2.5 और VOC निकलते हैं। प्रदूषण के दिनों में इनसे बचें।',
@@ -52,7 +57,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { minAqi: 100 },
     exposureReduction: { min: 5, max: 15 },
     emissionsReduction: null,
-    evidenceNote: 'WHO indoor air quality guidelines; incense can raise indoor PM2.5 by 50-200 µg/m³',
+    evidenceNote:
+      'WHO indoor air quality guidelines; incense can raise indoor PM2.5 by 50-200 µg/m³',
     evidenceStrength: 'strong',
   },
   {
@@ -84,7 +90,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { minAqi: 100 },
     exposureReduction: { min: 20, max: 45 },
     emissionsReduction: null,
-    evidenceNote: 'Peer-reviewed studies on CR boxes show 30-60% PM2.5 reduction; conservative estimate used',
+    evidenceNote:
+      'Peer-reviewed studies on CR boxes show 30-60% PM2.5 reduction; conservative estimate used',
     evidenceStrength: 'moderate',
   },
 
@@ -102,7 +109,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { commuteModes: ['car'] },
     exposureReduction: { min: 10, max: 25 },
     emissionsReduction: { min: 45, max: 80 },
-    evidenceNote: 'IPCC transport sector reports; EPA emissions factors for transit vs personal vehicles',
+    evidenceNote:
+      'IPCC transport sector reports; EPA emissions factors for transit vs personal vehicles',
     evidenceStrength: 'strong',
   },
   {
@@ -134,7 +142,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { commuteModes: ['car', 'walk', 'cycle', 'publicTransport'], minAqi: 150 },
     exposureReduction: { min: 15, max: 35 },
     emissionsReduction: { min: 50, max: 90 },
-    evidenceNote: 'Commute time exposure studies; 1-2 hour daily commute in polluted air significantly increases dose',
+    evidenceNote:
+      'Commute time exposure studies; 1-2 hour daily commute in polluted air significantly increases dose',
     evidenceStrength: 'moderate',
   },
 
@@ -186,7 +195,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: {},
     exposureReduction: { min: 5, max: 15 },
     emissionsReduction: null,
-    evidenceNote: 'Building ventilation studies; strategic ventilation reduces overall indoor pollution exposure',
+    evidenceNote:
+      'Building ventilation studies; strategic ventilation reduces overall indoor pollution exposure',
     evidenceStrength: 'moderate',
   },
   {
@@ -202,7 +212,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: { minAqi: 150 },
     exposureReduction: { min: 10, max: 30 },
     emissionsReduction: null,
-    evidenceNote: 'EPA guidance on protecting indoor air during wildfire smoke and high pollution events',
+    evidenceNote:
+      'EPA guidance on protecting indoor air during wildfire smoke and high pollution events',
     evidenceStrength: 'strong',
   },
 
@@ -226,7 +237,10 @@ export const ACTION_CATALOG: readonly Action[] = [
   {
     id: 'community-awareness',
     category: 'community',
-    title: { en: 'Share air quality advisory with community', hi: 'समुदाय के साथ वायु गुणवत्ता सलाह साझा करें' },
+    title: {
+      en: 'Share air quality advisory with community',
+      hi: 'समुदाय के साथ वायु गुणवत्ता सलाह साझा करें',
+    },
     description: {
       en: 'Distribute printable advisory to schools, RWAs, and workplaces. Collective action amplifies impact.',
       hi: 'स्कूलों, RWA और कार्यस्थलों में प्रिंट करने योग्य सलाह वितरित करें।',
@@ -236,7 +250,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: {},
     exposureReduction: { min: 2, max: 10 },
     emissionsReduction: { min: 5, max: 15 },
-    evidenceNote: 'Community health intervention studies show awareness increases protective behavior adoption',
+    evidenceNote:
+      'Community health intervention studies show awareness increases protective behavior adoption',
     evidenceStrength: 'limited',
   },
 
@@ -270,7 +285,8 @@ export const ACTION_CATALOG: readonly Action[] = [
     applicability: {},
     exposureReduction: { min: 10, max: 25 },
     emissionsReduction: null,
-    evidenceNote: 'Diurnal AQI variation studies; early morning typically has lower PM2.5 concentrations',
+    evidenceNote:
+      'Diurnal AQI variation studies; early morning typically has lower PM2.5 concentrations',
     evidenceStrength: 'moderate',
   },
 ] as const;

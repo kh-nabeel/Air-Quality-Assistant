@@ -12,9 +12,7 @@ import { OnboardingFlow } from '@/features/onboarding';
 const Dashboard = lazy(() =>
   import('@/features/dashboard').then((m) => ({ default: m.Dashboard })),
 );
-const DailyPlan = lazy(() =>
-  import('@/features/plan').then((m) => ({ default: m.DailyPlan })),
-);
+const DailyPlan = lazy(() => import('@/features/plan').then((m) => ({ default: m.DailyPlan })));
 const IndoorHacks = lazy(() =>
   import('@/features/indoor').then((m) => ({ default: m.IndoorHacks })),
 );
@@ -24,9 +22,7 @@ const Alternatives = lazy(() =>
 const ImpactExplainer = lazy(() =>
   import('@/features/impact').then((m) => ({ default: m.ImpactExplainer })),
 );
-const ChatPanel = lazy(() =>
-  import('@/features/chat').then((m) => ({ default: m.ChatPanel })),
-);
+const ChatPanel = lazy(() => import('@/features/chat').then((m) => ({ default: m.ChatPanel })));
 const CommunityKit = lazy(() =>
   import('@/features/community').then((m) => ({ default: m.CommunityKit })),
 );
@@ -49,7 +45,10 @@ function AppRoutes() {
   const { t } = useTranslation();
 
   const handleOnboardingComplete = useCallback(
-    (loc: import('@/domain/types').UserLocation, prof: import('@/domain/types').HouseholdProfile) => {
+    (
+      loc: import('@/domain/types').UserLocation,
+      prof: import('@/domain/types').HouseholdProfile,
+    ) => {
       setLocation(loc);
       setProfile(prof);
     },
@@ -92,12 +91,30 @@ function AppRoutes() {
         <Suspense fallback={<RouteSpinner />}>
           <Routes>
             <Route path="/" element={<Dashboard location={location} profile={resolvedProfile} />} />
-            <Route path="/plan" element={<DailyPlan location={location} profile={resolvedProfile} />} />
-            <Route path="/indoor" element={<IndoorHacks location={location} profile={resolvedProfile} />} />
-            <Route path="/alternatives" element={<Alternatives location={location} profile={resolvedProfile} />} />
-            <Route path="/impact" element={<ImpactExplainer location={location} profile={resolvedProfile} />} />
-            <Route path="/chat" element={<ChatPanel location={location} profile={resolvedProfile} />} />
-            <Route path="/community" element={<CommunityKit location={location} profile={resolvedProfile} />} />
+            <Route
+              path="/plan"
+              element={<DailyPlan location={location} profile={resolvedProfile} />}
+            />
+            <Route
+              path="/indoor"
+              element={<IndoorHacks location={location} profile={resolvedProfile} />}
+            />
+            <Route
+              path="/alternatives"
+              element={<Alternatives location={location} profile={resolvedProfile} />}
+            />
+            <Route
+              path="/impact"
+              element={<ImpactExplainer location={location} profile={resolvedProfile} />}
+            />
+            <Route
+              path="/chat"
+              element={<ChatPanel location={location} profile={resolvedProfile} />}
+            />
+            <Route
+              path="/community"
+              element={<CommunityKit location={location} profile={resolvedProfile} />}
+            />
             {/* Fallback: redirect to dashboard */}
             <Route path="*" element={<Dashboard location={location} profile={resolvedProfile} />} />
           </Routes>

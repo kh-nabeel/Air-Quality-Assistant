@@ -11,7 +11,11 @@ import { classifyAqi } from './classifyAqi';
 import { OUTDOOR_UNSAFE_AQI } from '@/config/constants';
 
 /** Time-of-day definitions with start/end hours */
-const TIME_SLOTS: readonly { readonly timeOfDay: TimeOfDay; readonly start: number; readonly end: number }[] = [
+const TIME_SLOTS: readonly {
+  readonly timeOfDay: TimeOfDay;
+  readonly start: number;
+  readonly end: number;
+}[] = [
   { timeOfDay: 'earlyMorning', start: 5, end: 7 },
   { timeOfDay: 'morning', start: 7, end: 10 },
   { timeOfDay: 'midday', start: 10, end: 13 },

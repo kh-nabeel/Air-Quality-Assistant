@@ -10,9 +10,7 @@ import { MIN_OUTDOOR_WINDOW_HOURS, OUTDOOR_UNSAFE_AQI } from '@/config/constants
  * @param hourlyData - Array of hourly AQI readings (must be sorted by time)
  * @returns Best outdoor window, or null if no safe window exists
  */
-export function findBestOutdoorWindow(
-  hourlyData: readonly HourlyAqiData[],
-): OutdoorWindow | null {
+export function findBestOutdoorWindow(hourlyData: readonly HourlyAqiData[]): OutdoorWindow | null {
   if (hourlyData.length < MIN_OUTDOOR_WINDOW_HOURS) return null;
 
   // Check if any hours are below the unsafe threshold

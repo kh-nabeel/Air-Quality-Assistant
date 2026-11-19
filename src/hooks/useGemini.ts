@@ -97,9 +97,7 @@ export function useGemini(): UseGeminiReturn {
           setChatMessages((prev) => {
             const existing = prev.find((m) => m.id === assistantId);
             if (existing) {
-              return prev.map((m) =>
-                m.id === assistantId ? { ...m, content: fullResponse } : m,
-              );
+              return prev.map((m) => (m.id === assistantId ? { ...m, content: fullResponse } : m));
             }
             return [
               ...prev,

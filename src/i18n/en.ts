@@ -1,3 +1,4 @@
+/** English (en) translation strings for the Saans application. */
 export const en = {
   app: { name: 'saans', tagline: 'breathe easy, live well' },
   nav: {
@@ -22,7 +23,8 @@ export const en = {
     next: 'next',
     back: 'back',
     finish: 'start breathing easy',
-    locationConsent: 'We will only use your approximate location (rounded to 2 decimal places) to fetch air quality data. Your exact coordinates are never stored or sent to AI services.',
+    locationConsent:
+      'We will only use your approximate location (rounded to 2 decimal places) to fetch air quality data. Your exact coordinates are never stored or sent to AI services.',
     sensitivities: 'who lives in your household?',
     children: 'children',
     elderly: 'older adults (65+)',
@@ -76,7 +78,7 @@ export const en = {
   dashboard: { title: 'dashboard', riskLevel: 'household risk level' },
   plan: {
     title: 'your daily plan',
-    subtitle: 'time-blocked routine based on today\'s forecast and your profile',
+    subtitle: "time-blocked routine based on today's forecast and your profile",
     regenerate: 'regenerate plan',
     poweredBy: 'personalized by Gemini AI',
     fallbackNotice: 'AI personalization temporarily unavailable. Showing standard recommendations.',
@@ -92,7 +94,7 @@ export const en = {
   },
   alternatives: {
     title: 'sustainable alternatives',
-    subtitle: 'better for you and your city\'s air',
+    subtitle: "better for you and your city's air",
     personalBenefit: 'your exposure benefit',
     emissionsBenefit: 'emissions benefit',
   },
@@ -105,7 +107,8 @@ export const en = {
     communityTitle: 'community impact',
     communityDesc: 'if {{count}} households in your society did this...',
     estimate: 'estimate',
-    rangeNote: 'All numbers are estimated ranges based on published guidance. Individual results may vary.',
+    rangeNote:
+      'All numbers are estimated ranges based on published guidance. Individual results may vary.',
     whyThis: 'why this advice?',
     inputsUsed: 'inputs used',
   },
@@ -117,7 +120,8 @@ export const en = {
     stop: 'stop',
     suggestedTitle: 'suggested questions',
     thinking: 'saans is thinking...',
-    disclaimer: 'This is not medical advice. If you experience severe symptoms, please consult a doctor immediately.',
+    disclaimer:
+      'This is not medical advice. If you experience severe symptoms, please consult a doctor immediately.',
   },
   community: {
     title: 'community kit',
@@ -148,13 +152,16 @@ export const en = {
     limited: 'limited evidence',
   },
   medical: {
-    disclaimer: 'Saans provides informational guidance only. It is not a substitute for professional medical advice, diagnosis, or treatment. If you experience breathing difficulties, chest pain, or other severe symptoms, seek medical attention immediately.',
+    disclaimer:
+      'Saans provides informational guidance only. It is not a substitute for professional medical advice, diagnosis, or treatment. If you experience breathing difficulties, chest pain, or other severe symptoms, seek medical attention immediately.',
   },
   attribution: {
     openMeteo: 'Air quality data by Open-Meteo.com',
     gemini: 'Powered by Google Gemini',
-    privacy: 'Your location and profile data stay on your device. Only approximate location and anonymous profile flags are sent to AI services. Free-tier AI prompts may be used by Google to improve their products.',
+    privacy:
+      'Your location and profile data stay on your device. Only approximate location and anonymous profile flags are sent to AI services. Free-tier AI prompts may be used by Google to improve their products.',
   },
 } as const;
 
+/** TypeScript type representing the full English translation structure. */
 export type Translations = typeof en;

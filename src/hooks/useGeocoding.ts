@@ -57,12 +57,9 @@ export function useGeocoding(): UseGeocodingReturn {
     };
   }, []);
 
-  const search = useCallback(
-    (query: string) => {
-      debouncedSearch.current(query);
-    },
-    [],
-  );
+  const search = useCallback((query: string) => {
+    debouncedSearch.current(query);
+  }, []);
 
   const clear = useCallback(() => {
     setResults([]);

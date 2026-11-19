@@ -16,7 +16,10 @@ const HOURLY_PARAMS = [
 ].join(',');
 
 /** In-flight request deduplication map */
-const inflightRequests = new Map<string, Promise<Result<{ current: AqiData; hourly: HourlyAqiData[] }>>>();
+const inflightRequests = new Map<
+  string,
+  Promise<Result<{ current: AqiData; hourly: HourlyAqiData[] }>>
+>();
 
 /**
  * Fetch air quality data from the Open-Meteo Air Quality API.

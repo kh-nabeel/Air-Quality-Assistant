@@ -15,7 +15,16 @@ interface HouseholdStepProps {
   readonly onAcChange: (val: boolean) => void;
 }
 
-const SENSITIVITY_OPTIONS: SensitivityFlag[] = ['children', 'elderly', 'respiratory', 'cardiac', 'pregnancy'];
+/** Size in pixels for checkbox/radio input controls. */
+const INPUT_CONTROL_SIZE = 18;
+
+const SENSITIVITY_OPTIONS: SensitivityFlag[] = [
+  'children',
+  'elderly',
+  'respiratory',
+  'cardiac',
+  'pregnancy',
+];
 const HOME_TYPE_OPTIONS: HomeType[] = ['sealed', 'moderate', 'leaky'];
 
 const SENSITIVITY_ICONS: Record<SensitivityFlag, ReactNode> = {
@@ -26,11 +35,78 @@ const SENSITIVITY_ICONS: Record<SensitivityFlag, ReactNode> = {
   pregnancy: <Shield size={16} />,
 };
 
-/** Step 2: Household composition and home environment */
+/** Component-scoped style definitions. */
+const styles = {
+  fieldset: {
+    border: 'none',
+    padding: 0,
+    margin: '0 0 var(--space-6) 0',
+  } satisfies React.CSSProperties,
+
+  legend: {
+    fontFamily: 'var(--font-heading)',
+    fontWeight: 800,
+    fontSize: 'var(--text-sm)',
+    marginBottom: 'var(--space-3)',
+    textTransform: 'lowercase',
+    color: 'var(--color-bg-dark)',
+  } satisfies React.CSSProperties,
+
+  optionGrid: {
+    display: 'grid',
+    gap: 'var(--space-2)',
+  } satisfies React.CSSProperties,
+
+  inputControl: {
+    width: INPUT_CONTROL_SIZE,
+    height: INPUT_CONTROL_SIZE,
+    accentColor: 'var(--color-bg-dark)',
+  } satisfies React.CSSProperties,
+
+  iconWrap: {
+    display: 'inline-flex',
+    color: 'var(--color-text-secondary)',
+  } satisfies React.CSSProperties,
+} as const;
+
+/** Base style for an unselected checkbox/radio label. */
+const checkboxStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 'var(--space-3)',
+  padding: 'var(--space-3) var(--space-4)',
+  borderRadius: 'var(--radius-lg)',
+  border: '2px solid var(--color-bg-dark)',
+  boxShadow: 'var(--shadow-sm)',
+  cursor: 'pointer',
+  minHeight: '48px',
+  fontFamily: 'var(--font-heading)',
+  fontWeight: 600,
+  fontSize: 'var(--text-sm)',
+  background: '#ffffff',
+  color: 'var(--color-bg-dark)',
+  transition: 'all var(--transition-fast)',
+};
+
+/** Active/selected variant of the checkbox/radio label. */
+const activeCheckboxStyle: React.CSSProperties = {
+  ...checkboxStyle,
+  background: '#FEF08A',
+  boxShadow: '3px 3px 0px var(--color-bg-dark)',
+  transform: 'translate(-1px, -1px)',
+};
+
+/** Step 2: Household composition and home environment. */
 export function HouseholdStep({
-  sensitivities, homeType, hasPurifier, hasAc,
-  onSensitivitiesChange, onHomeTypeChange, onPurifierChange, onAcChange,
-}: HouseholdStepProps) {
+  sensitivities,
+  homeType,
+  hasPurifier,
+  hasAc,
+  onSensitivitiesChange,
+  onHomeTypeChange,
+  onPurifierChange,
+  onAcChange,
+}: HouseholdStepProps): React.JSX.Element {
   const { t } = useTranslation();
 
   const toggleSensitivity = useCallback(
@@ -43,41 +119,14 @@ export function HouseholdStep({
     [sensitivities, onSensitivitiesChange],
   );
 
-  const checkboxStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--space-3)',
-    padding: 'var(--space-3) var(--space-4)',
-    borderRadius: 'var(--radius-lg)',
-    border: '2px solid var(--color-bg-dark)',
-    boxShadow: 'var(--shadow-sm)',
-    cursor: 'pointer',
-    minHeight: '48px',
-    fontFamily: 'var(--font-heading)',
-    fontWeight: 600,
-    fontSize: 'var(--text-sm)',
-    background: '#ffffff',
-    color: 'var(--color-bg-dark)',
-    transition: 'all var(--transition-fast)',
-  };
-
-  const activeCheckboxStyle: React.CSSProperties = {
-    ...checkboxStyle,
-    background: '#FEF08A',
-    boxShadow: '3px 3px 0px var(--color-bg-dark)',
-    transform: 'translate(-1px, -1px)',
-  };
-
   return (
     <div>
       <h2 className="section-title">{t.onboarding.step2Title}</h2>
 
       {/* Sensitivities */}
-      <fieldset style={{ border: 'none', padding: 0, margin: '0 0 var(--space-6) 0' }}>
-        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase', color: 'var(--color-bg-dark)' }}>
-          {t.onboarding.sensitivities}
-        </legend>
-        <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+      <fieldset style={styles.fieldset}>
+        <legend style={styles.legend}>{t.onboarding.sensitivities}</legend>
+        <div style={styles.optionGrid}>
           {SENSITIVITY_OPTIONS.map((flag) => {
             const isActive = sensitivities.includes(flag);
             return (
@@ -86,11 +135,9 @@ export function HouseholdStep({
                   type="checkbox"
                   checked={isActive}
                   onChange={() => toggleSensitivity(flag)}
-                  style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
+                  style={styles.inputControl}
                 />
-                <span style={{ display: 'inline-flex', color: 'var(--color-text-secondary)' }}>
-                  {SENSITIVITY_ICONS[flag]}
-                </span>
+                <span style={styles.iconWrap}>{SENSITIVITY_ICONS[flag]}</span>
                 <span>{t.onboarding[flag]}</span>
               </label>
             );
@@ -99,11 +146,9 @@ export function HouseholdStep({
       </fieldset>
 
       {/* Home type */}
-      <fieldset style={{ border: 'none', padding: 0, margin: '0 0 var(--space-6) 0' }}>
-        <legend style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-sm)', marginBottom: 'var(--space-3)', textTransform: 'lowercase', color: 'var(--color-bg-dark)' }}>
-          {t.onboarding.homeType}
-        </legend>
-        <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+      <fieldset style={styles.fieldset}>
+        <legend style={styles.legend}>{t.onboarding.homeType}</legend>
+        <div style={styles.optionGrid}>
           {HOME_TYPE_OPTIONS.map((ht) => {
             const isActive = homeType === ht;
             return (
@@ -113,7 +158,7 @@ export function HouseholdStep({
                   name="homeType"
                   checked={isActive}
                   onChange={() => onHomeTypeChange(ht)}
-                  style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
+                  style={styles.inputControl}
                 />
                 <span>{t.onboarding[ht]}</span>
               </label>
@@ -123,15 +168,15 @@ export function HouseholdStep({
       </fieldset>
 
       {/* Equipment */}
-      <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+      <div style={styles.optionGrid}>
         <label style={hasPurifier ? activeCheckboxStyle : checkboxStyle}>
           <input
             type="checkbox"
             checked={hasPurifier}
             onChange={(e) => onPurifierChange(e.target.checked)}
-            style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
+            style={styles.inputControl}
           />
-          <span style={{ display: 'inline-flex', color: 'var(--color-text-secondary)' }}>
+          <span style={styles.iconWrap}>
             <Fan size={16} />
           </span>
           <span>{t.onboarding.hasPurifier}</span>
@@ -141,9 +186,9 @@ export function HouseholdStep({
             type="checkbox"
             checked={hasAc}
             onChange={(e) => onAcChange(e.target.checked)}
-            style={{ width: 18, height: 18, accentColor: 'var(--color-bg-dark)' }}
+            style={styles.inputControl}
           />
-          <span style={{ display: 'inline-flex', color: 'var(--color-text-secondary)' }}>
+          <span style={styles.iconWrap}>
             <Snowflake size={16} />
           </span>
           <span>{t.onboarding.hasAc}</span>

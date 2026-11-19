@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-/** Zod schema for Open-Meteo Air Quality API response */
+/**
+ * Zod schema for the Open-Meteo Air Quality API response.
+ *
+ * Validates the top-level latitude/longitude, optional generation metadata,
+ * and the `hourly` object containing nullable pollutant concentration arrays.
+ */
 export const airQualityResponseSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
@@ -20,4 +25,5 @@ export const airQualityResponseSchema = z.object({
   }),
 });
 
+/** Inferred TypeScript type for a validated Open-Meteo Air Quality API response. */
 export type AirQualityApiResponse = z.infer<typeof airQualityResponseSchema>;

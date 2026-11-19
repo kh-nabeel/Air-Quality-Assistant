@@ -93,7 +93,11 @@ describe('rankActions', () => {
     const electricProfile = { ...baseProfile, cookingFuel: 'electric' as const };
     const result = rankActions(ACTION_CATALOG, makeContext(150, electricProfile));
     // biomass-specific action should not appear for electric cookers
-    const biomassCooking = result.find((r) => r.action.applicability.cookingFuels?.includes('biomass') && r.action.applicability.cookingFuels.length === 1);
+    const biomassCooking = result.find(
+      (r) =>
+        r.action.applicability.cookingFuels?.includes('biomass') &&
+        r.action.applicability.cookingFuels.length === 1,
+    );
     expect(biomassCooking).toBeUndefined();
   });
 
@@ -112,8 +116,10 @@ describe('rankActions', () => {
     const highAqiResult = rankActions(ACTION_CATALOG, makeContext(250, baseProfile));
     const lowAqiResult = rankActions(ACTION_CATALOG, makeContext(60, baseProfile));
     if (highAqiResult.length > 0 && lowAqiResult.length > 0) {
-      const avgHighRelevance = highAqiResult.reduce((s, r) => s + r.relevance, 0) / highAqiResult.length;
-      const avgLowRelevance = lowAqiResult.reduce((s, r) => s + r.relevance, 0) / lowAqiResult.length;
+      const avgHighRelevance =
+        highAqiResult.reduce((s, r) => s + r.relevance, 0) / highAqiResult.length;
+      const avgLowRelevance =
+        lowAqiResult.reduce((s, r) => s + r.relevance, 0) / lowAqiResult.length;
       expect(avgHighRelevance).toBeGreaterThan(avgLowRelevance);
     }
   });

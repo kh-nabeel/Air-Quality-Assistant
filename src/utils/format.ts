@@ -10,6 +10,7 @@ export function formatAqi(value: number): string {
 export function formatTime(isoString: string): string {
   try {
     const date = new Date(isoString);
+    if (isNaN(date.getTime())) return isoString;
     return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
   } catch {
     return isoString;
@@ -31,6 +32,7 @@ export function roundCoordinates(value: number, decimals = 2): number {
 export function formatDate(isoString: string): string {
   try {
     const date = new Date(isoString);
+    if (isNaN(date.getTime())) return isoString;
     return date.toLocaleDateString(undefined, {
       weekday: 'long',
       month: 'short',

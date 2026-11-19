@@ -1,5 +1,6 @@
-import type { ReactNode, CSSProperties } from 'react';
+import type { ReactNode, CSSProperties, ReactElement } from 'react';
 
+/** Props for the {@link Card} component. */
 interface CardProps {
   readonly children: ReactNode;
   readonly variant?: 'default' | 'elevated' | 'outlined' | 'accent';
@@ -12,6 +13,7 @@ interface CardProps {
   readonly ariaLive?: 'polite' | 'assertive' | 'off';
 }
 
+/** Padding size to CSS value mapping. */
 const paddingMap = {
   none: '0',
   sm: 'var(--space-4)',
@@ -19,6 +21,7 @@ const paddingMap = {
   lg: 'var(--space-8)',
 } as const;
 
+/** Variant-specific style overrides. */
 const variantMap: Record<string, CSSProperties> = {
   default: {
     background: 'var(--color-bg-elevated)',
@@ -42,7 +45,12 @@ const variantMap: Record<string, CSSProperties> = {
   },
 };
 
-/** Reusable card component with variant and padding options */
+/**
+ * Reusable card component with variant and padding options.
+ *
+ * @param props - Card component props.
+ * @returns The rendered card element.
+ */
 export function Card({
   children,
   variant = 'default',
@@ -51,7 +59,7 @@ export function Card({
   style,
   ariaLabel,
   ariaLive,
-}: CardProps) {
+}: CardProps): ReactElement {
   const cardStyle: CSSProperties = {
     borderRadius: 'var(--radius-xl)',
     padding: paddingMap[padding],

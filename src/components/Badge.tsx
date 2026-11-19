@@ -1,9 +1,11 @@
-import type { ReactNode, CSSProperties } from 'react';
+import type { ReactNode, CSSProperties, ReactElement } from 'react';
 import type { AqiCategory, BudgetTier, EffortLevel, EvidenceStrength } from '@/domain/types';
 import { Check, AlertCircle, AlertTriangle, ShieldAlert, Activity } from 'lucide-react';
 
+/** Supported badge variants. */
 type BadgeVariant = 'default' | 'aqi' | 'cost' | 'effort' | 'evidence';
 
+/** Props for the {@link Badge} component. */
 interface BadgeProps {
   readonly children: ReactNode;
   readonly variant?: BadgeVariant;
@@ -14,7 +16,7 @@ interface BadgeProps {
   readonly style?: CSSProperties;
 }
 
-/** AQI category to CSS color variable mapping */
+/** AQI category to CSS color variable mapping. */
 const aqiColorMap: Record<AqiCategory, string> = {
   good: 'var(--color-aqi-good)',
   moderate: 'var(--color-aqi-moderate)',
@@ -24,24 +26,57 @@ const aqiColorMap: Record<AqiCategory, string> = {
   hazardous: 'var(--color-aqi-hazardous)',
 };
 
+/** Default icon size for badge icons (in px). */
+const BADGE_ICON_SIZE = 13;
+
+/** Default icon stroke width for badge icons. */
+const BADGE_ICON_STROKE = 2.5;
+
+/** Component-scoped style definitions. */
+const styles = {
+  iconWrapper: {
+    display: 'inline-flex',
+    alignItems: 'center',
+  } satisfies React.CSSProperties,
+} as const;
+
+/**
+ * Returns the AQI category icon for a given category.
+ *
+ * @param category - The AQI severity category.
+ * @returns A React element representing the category icon.
+ */
 function getAqiIcon(category: AqiCategory): ReactNode {
   switch (category) {
     case 'good':
-      return <Check size={13} strokeWidth={2.5} />;
+      return <Check size={BADGE_ICON_SIZE} strokeWidth={BADGE_ICON_STROKE} />;
     case 'moderate':
-      return <Activity size={13} strokeWidth={2.5} />;
+      return <Activity size={BADGE_ICON_SIZE} strokeWidth={BADGE_ICON_STROKE} />;
     case 'sensitive':
-      return <AlertCircle size={13} strokeWidth={2.5} />;
+      return <AlertCircle size={BADGE_ICON_SIZE} strokeWidth={BADGE_ICON_STROKE} />;
     case 'unhealthy':
     case 'veryUnhealthy':
-      return <AlertTriangle size={13} strokeWidth={2.5} />;
+      return <AlertTriangle size={BADGE_ICON_SIZE} strokeWidth={BADGE_ICON_STROKE} />;
     case 'hazardous':
-      return <ShieldAlert size={13} strokeWidth={2.5} />;
+      return <ShieldAlert size={BADGE_ICON_SIZE} strokeWidth={BADGE_ICON_STROKE} />;
   }
 }
 
-/** Design-system badge for labels, AQI categories, cost tiers, and evidence strength */
-export function Badge({ children, variant = 'default', aqiCategory, costTier, effort, evidence, style }: BadgeProps) {
+/**
+ * Design-system badge for labels, AQI categories, cost tiers, and evidence strength.
+ *
+ * @param props - Badge component props.
+ * @returns The rendered badge element.
+ */
+export function Badge({
+  children,
+  variant = 'default',
+  aqiCategory,
+  costTier,
+  effort,
+  evidence,
+  style,
+}: BadgeProps): ReactElement {
   let bg = 'var(--color-bg-secondary)';
   let color = 'var(--color-text-primary)';
   let icon: ReactNode = null;
@@ -53,21 +88,42 @@ export function Badge({ children, variant = 'default', aqiCategory, costTier, ef
   }
 
   if (variant === 'cost') {
-    if (costTier === 'free') { bg = '#10B981'; color = '#ffffff'; }
-    else if (costTier === 'low') { bg = '#F59E0B'; color = '#000000'; }
-    else { bg = '#3B82F6'; color = '#ffffff'; }
+    if (costTier === 'free') {
+      bg = '#10B981';
+      color = '#ffffff';
+    } else if (costTier === 'low') {
+      bg = '#F59E0B';
+      color = '#000000';
+    } else {
+      bg = '#3B82F6';
+      color = '#ffffff';
+    }
   }
 
   if (variant === 'effort') {
-    if (effort === 'minimal') { bg = 'var(--color-brand-primary-light)'; color = 'var(--color-brand-primary)'; }
-    else if (effort === 'moderate') { bg = '#FCD34D'; color = '#18181B'; }
-    else { bg = '#F97316'; color = '#ffffff'; }
+    if (effort === 'minimal') {
+      bg = 'var(--color-brand-primary-light)';
+      color = 'var(--color-brand-primary)';
+    } else if (effort === 'moderate') {
+      bg = '#FCD34D';
+      color = '#18181B';
+    } else {
+      bg = '#F97316';
+      color = '#ffffff';
+    }
   }
 
   if (variant === 'evidence') {
-    if (evidence === 'strong') { bg = '#059669'; color = '#ffffff'; }
-    else if (evidence === 'moderate') { bg = '#D97706'; color = '#ffffff'; }
-    else { bg = '#6B7280'; color = '#ffffff'; }
+    if (evidence === 'strong') {
+      bg = '#059669';
+      color = '#ffffff';
+    } else if (evidence === 'moderate') {
+      bg = '#D97706';
+      color = '#ffffff';
+    } else {
+      bg = '#6B7280';
+      color = '#ffffff';
+    }
   }
 
   const badgeStyle: CSSProperties = {
@@ -92,7 +148,7 @@ export function Badge({ children, variant = 'default', aqiCategory, costTier, ef
 
   return (
     <span style={badgeStyle}>
-      {icon && <span style={{ display: 'inline-flex', alignItems: 'center' }}>{icon}</span>}
+      {icon && <span style={styles.iconWrapper}>{icon}</span>}
       {children}
     </span>
   );

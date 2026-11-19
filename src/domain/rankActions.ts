@@ -1,9 +1,4 @@
-import type {
-  Action,
-  BudgetTier,
-  HouseholdProfile,
-  RankedAction,
-} from './types';
+import type { Action, BudgetTier, HouseholdProfile, RankedAction } from './types';
 import { RELEVANCE_WEIGHT, IMPACT_WEIGHT, FEASIBILITY_WEIGHT } from '@/config/constants';
 
 /** Budget tier ordering for feasibility scoring */
@@ -27,7 +22,11 @@ function isApplicable(action: Action, profile: HouseholdProfile, currentAqi: num
   const rules = action.applicability;
 
   if (rules.minAqi !== undefined && currentAqi < rules.minAqi) return false;
-  if (rules.maxBudgetTier !== undefined && BUDGET_ORDER[profile.budgetTier] < BUDGET_ORDER[rules.maxBudgetTier]) return false;
+  if (
+    rules.maxBudgetTier !== undefined &&
+    BUDGET_ORDER[profile.budgetTier] < BUDGET_ORDER[rules.maxBudgetTier]
+  )
+    return false;
   if (rules.homeTypes && !rules.homeTypes.includes(profile.homeType)) return false;
   if (rules.cookingFuels && !rules.cookingFuels.includes(profile.cookingFuel)) return false;
   if (rules.commuteModes && !rules.commuteModes.includes(profile.commuteMode)) return false;

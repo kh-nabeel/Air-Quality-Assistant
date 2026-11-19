@@ -1,8 +1,10 @@
-import type { ReactNode, CSSProperties } from 'react';
+import type { ReactNode, CSSProperties, ReactElement } from 'react';
 import { Info, AlertTriangle, XCircle, CheckCircle2, X } from 'lucide-react';
 
+/** Supported banner variants. */
 type BannerVariant = 'info' | 'warning' | 'error' | 'success';
 
+/** Props for the {@link Banner} component. */
 interface BannerProps {
   readonly children: ReactNode;
   readonly variant?: BannerVariant;
@@ -10,6 +12,7 @@ interface BannerProps {
   readonly style?: CSSProperties;
 }
 
+/** Visual configuration for each banner variant. */
 const variantConfig: Record<BannerVariant, { bg: string; border: string; icon: ReactNode }> = {
   info: { bg: '#EFF6FF', border: '#2563EB', icon: <Info size={18} color="#2563EB" /> },
   warning: { bg: '#FFFBEB', border: '#D97706', icon: <AlertTriangle size={18} color="#D97706" /> },
@@ -17,8 +20,44 @@ const variantConfig: Record<BannerVariant, { bg: string; border: string; icon: R
   success: { bg: '#ECFDF5', border: '#059669', icon: <CheckCircle2 size={18} color="#059669" /> },
 };
 
-/** Alert banner for status messages, with optional dismiss button */
-export function Banner({ children, variant = 'info', onDismiss, style }: BannerProps) {
+/** Component-scoped style definitions. */
+const styles = {
+  iconWrapper: {
+    display: 'inline-flex',
+    flexShrink: 0,
+  } satisfies CSSProperties,
+
+  content: {
+    flex: 1,
+    lineHeight: 'var(--leading-relaxed)',
+  } satisfies CSSProperties,
+
+  dismissButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    color: 'var(--color-text-muted)',
+    padding: 'var(--space-1)',
+    minWidth: '36px',
+    minHeight: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  } satisfies CSSProperties,
+} as const;
+
+/**
+ * Alert banner for status messages, with optional dismiss button.
+ *
+ * @param props - Banner component props.
+ * @returns The rendered banner element.
+ */
+export function Banner({
+  children,
+  variant = 'info',
+  onDismiss,
+  style,
+}: BannerProps): ReactElement {
   const config = variantConfig[variant];
   const bannerStyle: CSSProperties = {
     display: 'flex',
@@ -37,27 +76,12 @@ export function Banner({ children, variant = 'info', onDismiss, style }: BannerP
 
   return (
     <div role="alert" style={bannerStyle}>
-      <span aria-hidden="true" style={{ display: 'inline-flex', flexShrink: 0 }}>
+      <span aria-hidden="true" style={styles.iconWrapper}>
         {config.icon}
       </span>
-      <div style={{ flex: 1, lineHeight: 'var(--leading-relaxed)' }}>{children}</div>
+      <div style={styles.content}>{children}</div>
       {onDismiss && (
-        <button
-          onClick={onDismiss}
-          aria-label="Dismiss"
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'var(--color-text-muted)',
-            padding: 'var(--space-1)',
-            minWidth: '36px',
-            minHeight: '36px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <button onClick={onDismiss} aria-label="Dismiss" style={styles.dismissButton}>
           <X size={16} />
         </button>
       )}

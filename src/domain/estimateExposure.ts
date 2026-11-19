@@ -60,8 +60,7 @@ export function estimateExposure(
 
   // Confidence based on evidence strength ratio
   const evidenceRatio = totalActions > 0 ? strongEvidence / totalActions : 0;
-  const confidence =
-    evidenceRatio > 0.6 ? 'strong' : evidenceRatio > 0.3 ? 'moderate' : 'limited';
+  const confidence = evidenceRatio > 0.6 ? 'strong' : evidenceRatio > 0.3 ? 'moderate' : 'limited';
 
   return {
     currentExposure: currentAqi,

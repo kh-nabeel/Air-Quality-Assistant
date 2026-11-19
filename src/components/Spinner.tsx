@@ -1,15 +1,22 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 
+/** Props for the {@link Spinner} component. */
 interface SpinnerProps {
   readonly size?: 'sm' | 'md' | 'lg';
   /** Accessible label for the spinner */
   readonly label?: string;
 }
 
+/** Size preset to pixel dimension mapping. */
 const sizeMap = { sm: 16, md: 24, lg: 40 } as const;
 
-/** Animated loading spinner with accessible label */
-export function Spinner({ size = 'md', label = 'Loading…' }: SpinnerProps) {
+/**
+ * Animated loading spinner with accessible label.
+ *
+ * @param props - Spinner component props.
+ * @returns The rendered spinner element with screen-reader text.
+ */
+export function Spinner({ size = 'md', label = 'Loading…' }: SpinnerProps): ReactElement {
   const px = sizeMap[size];
   const style: CSSProperties = {
     width: px,
