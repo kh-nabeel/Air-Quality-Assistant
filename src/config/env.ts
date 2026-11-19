@@ -7,6 +7,8 @@ export const env = {
   firebaseMessagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string,
   firebaseAppId: import.meta.env.VITE_FIREBASE_APP_ID as string,
   recaptchaSiteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY as string,
+  /** App Check provider: 'enterprise' (default, Google Cloud Fraud Defense) or 'v3' */
+  appCheckProvider: (import.meta.env.VITE_APP_CHECK_PROVIDER as string) || 'enterprise',
   /** App Check debug token for local development (optional) */
   appCheckDebugToken: import.meta.env.VITE_APP_CHECK_DEBUG_TOKEN as string | undefined,
   isDev: import.meta.env.DEV,

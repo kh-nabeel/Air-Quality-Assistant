@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { type AppCheck, initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { type AppCheck, initializeAppCheck, ReCaptchaEnterpriseProvider, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getAI, GoogleAIBackend } from 'firebase/ai';
 import { env } from './env';
 
@@ -34,8 +34,13 @@ export function initAppCheck(): AppCheck | null {
       globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = env.appCheckDebugToken || true;
     }
 
+    const provider =
+      env.appCheckProvider === 'v3'
+        ? new ReCaptchaV3Provider(env.recaptchaSiteKey)
+        : new ReCaptchaEnterpriseProvider(env.recaptchaSiteKey);
+
     appCheckInstance = initializeAppCheck(firebaseApp, {
-      provider: new ReCaptchaV3Provider(env.recaptchaSiteKey),
+      provider,
       isTokenAutoRefreshEnabled: true,
     });
 
