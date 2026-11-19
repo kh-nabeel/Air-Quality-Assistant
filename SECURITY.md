@@ -12,30 +12,31 @@ If you discover a security vulnerability, please open a GitHub issue marked **[S
 
 ### Client-Side
 
-| Control | Implementation |
-|---|---|
-| Content Security Policy | `firebase.json` — strict CSP, no inline scripts |
-| No `dangerouslySetInnerHTML` | Enforced by code review and linting |
-| Input sanitisation | `src/utils/sanitize.ts` — all user input stripped before use |
-| Zod validation | All API responses validated against strict schemas |
-| Prompt injection resistance | User input XML-delimited; never obeyed as instructions |
-| Input length cap | 500 characters max for Gemini input |
-| Output token cap | 1024 tokens max Gemini output |
+| Control                      | Implementation                                               |
+| ---------------------------- | ------------------------------------------------------------ |
+| Content Security Policy      | `firebase.json` — strict CSP, no inline scripts              |
+| No `dangerouslySetInnerHTML` | Enforced by code review and linting                          |
+| Input sanitisation           | `src/utils/sanitize.ts` — all user input stripped before use |
+| Zod validation               | All API responses validated against strict schemas           |
+| Prompt injection resistance  | User input XML-delimited; never obeyed as instructions       |
+| Input length cap             | 500 characters max for Gemini input                          |
+| Output token cap             | 1024 tokens max Gemini output                                |
 
 ### Infrastructure
 
-| Control | Implementation |
-|---|---|
-| Firebase App Check | reCAPTCHA v3 provider; debug token for localhost only |
-| No secrets in repo | Only public Firebase web config in env vars |
-| `.env.example` committed | No real values ever committed |
-| Security headers | HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-Content-Type-Options |
-| Permissions-Policy | Geolocation limited; camera/microphone denied |
+| Control                  | Implementation                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------- |
+| Firebase App Check       | Google Cloud Fraud Defense (`ReCaptchaEnterpriseProvider`); debug token for localhost |
+| Dependency Auditing      | Zero known vulnerabilities (`npm audit` reports 0 vulnerabilities)                    |
+| No secrets in repo       | Only public Firebase web config in env vars                                           |
+| `.env.example` committed | No real values ever committed                                                         |
+| Security headers         | HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-Content-Type-Options    |
+| Permissions-Policy       | Geolocation limited; camera/microphone denied                                         |
 
 ### Headers (`firebase.json`)
 
 ```
-Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://air-quality-api.open-meteo.com https://geocoding-api.open-meteo.com https://firebaseinstallations.googleapis.com https://identitytoolkit.googleapis.com https://generativelanguage.googleapis.com; img-src 'self' data:; frame-ancestors 'none'
+Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://air-quality-api.open-meteo.com https://geocoding-api.open-meteo.com https://*.googleapis.com https://*.firebaseio.com https://firebaseinstallations.googleapis.com https://content-firebaseappcheck.googleapis.com; img-src 'self' data:; frame-src https://www.google.com https://www.recaptcha.net; frame-ancestors 'none'
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
