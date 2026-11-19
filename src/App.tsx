@@ -1,5 +1,6 @@
 import { Suspense, lazy, useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import type { HouseholdProfile, UserLocation } from '@/domain/types';
 import { useProfile } from '@/hooks/useProfile';
 import { useTranslation } from '@/i18n';
 import { SkipLink } from '@/components/SkipLink';
@@ -45,10 +46,7 @@ function AppRoutes() {
   const { t } = useTranslation();
 
   const handleOnboardingComplete = useCallback(
-    (
-      loc: import('@/domain/types').UserLocation,
-      prof: import('@/domain/types').HouseholdProfile,
-    ) => {
+    (loc: UserLocation, prof: HouseholdProfile) => {
       setLocation(loc);
       setProfile(prof);
     },
